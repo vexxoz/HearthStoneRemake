@@ -9,9 +9,6 @@ import javax.imageio.ImageIO;
 import javax.swing.JComponent;
 
 public class Board extends JComponent {
-
-	//All Cards Class
-	AllCards allCards = new AllCards();
 	
 	//photos
 	BufferedImage postIcon;
@@ -50,10 +47,10 @@ public class Board extends JComponent {
 		// 
 		
 		playerDeck = new Deck();
-		playerDeck.startingDeck(0, allCards.getCards());
+		playerDeck.startingDeck(0);
 		
 		playerHand = new Deck();
-		playerHand.startingDeck(8, allCards.getCards());
+		playerHand.startingDeck(8);
 		
 		playedPlayerCards = new Deck();
 		
@@ -87,15 +84,14 @@ public class Board extends JComponent {
 		
 		// prints a maximum of 8 cards in the players hand
 		for(Character a : playerHand.getCharacters()) {
-//			try {
-//				canvas.drawImage(ImageIO.read(new File(a.getSource())), 50+padding, 400, null);
-//			}catch (Exception e) {
-//				System.out.println(e.getMessage());
-//			}
+			try {
+				canvas.drawImage(ImageIO.read(new File(a.getSource())), 50+padding, 400, null);
+			}catch (Exception e) {
+				System.out.println(e.getMessage());
+			}
 			a.setRect(50+padding, 400);
-//			canvas.setColor(new Color(255,255,255,1));			
+			canvas.setColor(new Color(255,255,255,1));			
 			canvas.fill(a.getRect());
-			//System.out.println(a.getRect());
 			canvas.setColor(Color.white);
 			canvas.drawString("HP: " + a.getHp(), 60+padding, 420);
 			canvas.drawString("ATK: " + a.getAtk(), 58+padding, 440);
@@ -109,13 +105,13 @@ public class Board extends JComponent {
 		// prints all the cards the player has played
 		padding = 0;
 		for(Character a : playedPlayerCards.getCharacters()) {
-//			try {
-//				canvas.drawImage(ImageIO.read(new File(a.getSource())), 50+padding, 250, null);
-//			}catch (Exception e) {
-//				System.out.println(e.getMessage());
-//			}
+			try {
+				canvas.drawImage(ImageIO.read(new File(a.getSource())), 50+padding, 250, null);
+			}catch (Exception e) {
+				System.out.println(e.getMessage());
+			}
 			a.setRect(50+padding, 250);
-//			canvas.setColor(new Color(255,255,255,1));
+			canvas.setColor(new Color(255,255,255,1));
 			canvas.fill(a.getRect());
 			canvas.setColor(Color.white);
 			canvas.drawString("HP: " + a.getHp(), 60+padding, 270);
@@ -124,8 +120,6 @@ public class Board extends JComponent {
 		}
 		
 		// the mana section background
-		//canvas.setColor(new Color(117, 117, 117));
-		//canvas.fillRect(950, 0, 50, 390);
 		canvas.drawImage(postBackground, 950, 0, null);
 		
 		// mana section titles
@@ -134,16 +128,13 @@ public class Board extends JComponent {
 		
 		// prints the mana gems on the side
 		padding = 0;
-		canvas.setColor(Color.red);
 		for(int i = 1; i<= mana-usedMana;i++) {
-			//canvas.drawImage(postIcon, 955, 30+padding, null);
-			canvas.fillOval(955,30+padding, 30, 30);
+			canvas.drawImage(postIcon, 955, 30+padding, null);
 			padding += 35;
 		}
 		//canvas.setColor(Color.black);
 		for(int i = mana-usedMana; i< mana;i++) {
 			canvas.drawImage(postIconUsed, 955, 30+padding, null);
-			//canvas.fillOval(955,30+padding, 30, 30);
 			padding += 35;
 		}		
 		

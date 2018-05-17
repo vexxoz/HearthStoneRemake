@@ -10,13 +10,14 @@ public class Deck {
 		myDeck = new ArrayList<Character>();
 	}
 	
-	public void startingDeck(int cardsTotal, List<Character> gameCards) {
-		int index = 0;
-		while(index < cardsTotal && gameCards.size() > 0) {
-			int cardIndex = (int)(Math.random()*(gameCards.size()-1));
-			gameCards.remove(cardIndex);
-			myDeck.add(gameCards.get(cardIndex));
-			index++;
+	public void startingDeck(int cardsTotal) {
+
+		for(int i=0; i<cardsTotal;i++) {
+			AllCards cards = new AllCards();
+			
+			int index = (int)Math.random()*(cards.getCards().size()-1);
+			Character addCard = cards.get(index);
+			myDeck.add(new Character(addCard.getName(), addCard.getHp(), addCard.getAtk(), addCard.getCost(), addCard.getSource()));
 		}
 	}
 	
