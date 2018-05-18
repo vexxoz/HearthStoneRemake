@@ -30,8 +30,8 @@ public class Board extends JComponent {
 	
 	
 	//All variables
-	private int mana;
-	private int usedMana;
+	private static int mana;
+	private static int usedMana;
 	
 	// turn button object
 	private Rectangle nextTurnButton = new Rectangle(950,510,50,40);
@@ -222,8 +222,12 @@ public class Board extends JComponent {
 				playerDeck.remove(playerDeck.getCharacters().get(0));
 			}				
 		}
-		enemyAI.move(enemyDeck, playedEnemyCards, playedPlayerCards);
+		enemyAI.move(enemyHand, playedEnemyCards, playedPlayerCards, mana);
 		repaint();
+	}
+	
+	public int getMana() {
+		return mana;
 	}
 	
 	public Rectangle getGameArea() {
