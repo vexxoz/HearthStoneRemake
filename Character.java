@@ -18,6 +18,7 @@ public class Character {
 		type = "Ally";
 		hp = 0;
 		atk = 0;
+		cost = 0;
 		bigPhotoSource = "";
 		littlePhotoSource = "";
 		rect = new Rectangle(0,0,0,0);

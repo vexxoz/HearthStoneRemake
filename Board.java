@@ -23,6 +23,7 @@ public class Board extends JComponent {
 	private Deck playerHand;
 	
 	//enemy decks
+	AI enemyAI;
 	private Deck enemyDeck;
 	private Deck playedEnemyCards;
 	private Deck enemyHand;
@@ -55,7 +56,7 @@ public class Board extends JComponent {
 		// max hand is 8
 		// 
 		playerDeck = new Deck();
-		playerDeck.startingDeck(0);
+		playerDeck.startingDeck(5);
 		
 		playerHand = new Deck();
 		playerHand.startingDeck(5);
@@ -64,7 +65,7 @@ public class Board extends JComponent {
 		
 		
 		// enemy deck instantiations
-		AI enemyAI = new AI();
+		enemyAI = new AI();
 		enemyDeck = new Deck();
 		enemyDeck.startingDeck(0);
 		
@@ -74,16 +75,10 @@ public class Board extends JComponent {
 		playedEnemyCards = new Deck();
 		
 		
-		
-		// print the decks stats to console
-		System.out.println(playerDeck);
-		
 		// set the starting mana for the player
 		// max mana is 10
 		mana = 1;
 		usedMana = 0;
-		System.out.println("Mana: " + mana);
-		System.out.println("Used Mana: " + usedMana);
 	}
 	
 	public void paintComponent(Graphics g) {
@@ -194,10 +189,6 @@ public class Board extends JComponent {
 		
 	}
 	
-	public void printPlayerHand() {
-		
-	}
-	
 	public void playCard(Character a) {
 		if(a.getCost() <= mana-usedMana && playedPlayerCards.getCharacters().size() < 8) {
 			playedPlayerCards.add(a);
@@ -205,14 +196,11 @@ public class Board extends JComponent {
 			usedMana += a.getCost();
 			repaint();			
 		}
-		System.out.println("Mana: " + mana);
-		System.out.println("Used Mana: " + usedMana);
 	}
 	
 	public Character cardHighlight(int x, int y) {
 		for(Character a: playerHand.getCharacters()) {
 			if(a.getRect().contains(x, y)) {
-				System.out.println(a.toString());
 				return a;
 			}
 		}
@@ -225,20 +213,16 @@ public class Board extends JComponent {
 		if(nextTurnButton.contains(x, y)) {
 			if(mana < 10) {		
 				mana++;
-				usedMana = 0;
-				if(playerHand.getCharacters().size() < 8 && playerDeck.getCharacters().size() > 0) {
-					playerHand.add(playerDeck.getCharacters().get(0));
-					playerDeck.remove(playerDeck.getCharacters().get(0));
-				}				
+				usedMana = 0;		
+			}else if(mana == 10) {
+				usedMana = 0;				
 			}			
-			if(mana == 10) {
-				usedMana = 0;
-				if(playerHand.getCharacters().size() < 8 && playerDeck.getCharacters().size() > 0) {
-					playerHand.add(playerDeck.getCharacters().get(0));
-					playerDeck.remove(playerDeck.getCharacters().get(0));
-				}					
-			}			
+			if(playerHand.getCharacters().size() < 8 && playerDeck.getCharacters().size() > 0) {
+				playerHand.add(playerDeck.getCharacters().get(0));
+				playerDeck.remove(playerDeck.getCharacters().get(0));
+			}				
 		}
+		enemyAI.move(enemyDeck, playedEnemyCards, playedPlayerCards);
 		repaint();
 	}
 	
