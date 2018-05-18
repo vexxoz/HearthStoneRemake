@@ -66,7 +66,6 @@ public class AI {
 						}
 					}
 					
-					
 					if(tempValue > value) {
 						value = tempValue;
 						bestPlay = compare;
@@ -74,10 +73,18 @@ public class AI {
 				}
 			}
 			
+			//System.out.println(bestPlay.toString());
+			
 			cardsPlayed.add(bestPlay);
 			cardsInHand.remove(bestPlay);
 			mana -= bestPlay.getCost();
 			
+		}
+		if(cardsInHand.getCharacters().size() == 1 && playerPlayedCards.getCharacters().size() > 1) {
+			Character bestPlay = cardsInHand.getCharacters().get(0);
+			cardsPlayed.add(bestPlay);
+			cardsInHand.remove(bestPlay);		
+			mana -= bestPlay.getCost();
 		}
 		
 		

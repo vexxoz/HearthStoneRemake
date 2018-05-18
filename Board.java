@@ -67,7 +67,7 @@ public class Board extends JComponent {
 		// enemy deck instantiations
 		enemyAI = new AI();
 		enemyDeck = new Deck();
-		enemyDeck.startingDeck(0);
+		enemyDeck.startingDeck(20);
 		
 		enemyHand = new Deck();
 		enemyHand.startingDeck(5);
@@ -220,8 +220,14 @@ public class Board extends JComponent {
 			if(playerHand.getCharacters().size() < 8 && playerDeck.getCharacters().size() > 0) {
 				playerHand.add(playerDeck.getCharacters().get(0));
 				playerDeck.remove(playerDeck.getCharacters().get(0));
+			}	
+			if(enemyHand.getCharacters().size() < 8 && enemyDeck.getCharacters().size() > 0) {
+				enemyHand.add(enemyDeck.getCharacters().get(0));
+				enemyDeck.remove(enemyDeck.getCharacters().get(0));
+				System.out.println(enemyDeck.getCharacters().get(0).toString());
 			}				
 		}
+		
 		enemyAI.move(enemyHand, playedEnemyCards, playedPlayerCards, mana);
 		repaint();
 	}
