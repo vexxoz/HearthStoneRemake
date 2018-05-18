@@ -17,7 +17,7 @@ public class Deck {
 			
 			int index = (int)(Math.random()*(cards.getCards().size()-1));
 			Character addCard = cards.get(index);
-			myDeck.add(new Character(addCard.getName(), addCard.getHp(), addCard.getAtk(), addCard.getCost(), addCard.getSource()));
+			myDeck.add(new Character(addCard.getName(), addCard.getHp(), addCard.getAtk(), addCard.getCost(), addCard.getSourceBig(), addCard.getSourceLittle()));
 		}
 	}
 	
