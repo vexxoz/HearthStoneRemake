@@ -5,7 +5,8 @@ public class Character {
 	private String type;
 	private int hp;
 	private int atk;
-	private String photoSource;
+	private String bigPhotoSource;
+	private String littlePhotoSource;
 	// How much the card costs
 	private int cost;
 	//
@@ -17,19 +18,21 @@ public class Character {
 		type = "Ally";
 		hp = 0;
 		atk = 0;
-		photoSource = "";
+		bigPhotoSource = "";
+		littlePhotoSource = "";
 		rect = new Rectangle(0,0,0,0);
 		hasMoved = false;
 	}
 	
-	public Character(String nameIn, int hpIn, int atkIn, int costIn, String photo) {
+	public Character(String nameIn, int hpIn, int atkIn, int costIn, String bigPhotoIn, String littlePhotoIn) {
 		name = nameIn;
 		type = "Ally";
 		hp = hpIn;
 		atk = atkIn;
 		cost = costIn;
-		photoSource = photo;
-		rect = new Rectangle(0,0,50,50);
+		bigPhotoSource = bigPhotoIn;
+		littlePhotoSource = littlePhotoIn;
+		rect = new Rectangle(0,0,100,100);
 		hasMoved = false;
 	}
 	
@@ -77,9 +80,13 @@ public class Character {
 //		return value;
 //	}
 	
-	public String getSource() {
-		return photoSource;
+	public String getSourceBig() {
+		return bigPhotoSource;
 	}
+	
+	public String getSourceLittle() {
+		return littlePhotoSource;
+	}	
 	
 	public void setName(String nameIn) {
 		name = nameIn;
