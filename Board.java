@@ -106,6 +106,23 @@ public class Board extends JComponent {
 			
 			
 		}		
+		
+		// prints all the cards the player has played
+		padding = 0;
+		for(Character a : playedEnemyCards.getCharacters()) {
+			try {
+				canvas.drawImage(ImageIO.read(new File(a.getSourceLittle())), 50+padding, 270, null);
+			}catch (Exception e) {
+				System.out.println(e.getMessage());
+			}
+			a.setRect(100+padding, 270);
+			canvas.setColor(new Color(255,255,255,1));
+			canvas.fill(a.getRect());
+			canvas.setColor(Color.white);
+			canvas.drawString("HP: " + a.getHp(), 60+padding, 290);
+			canvas.drawString("ATK: " + a.getAtk(), 58+padding, 300);
+			padding += 500/playedEnemyCards.getCharacters().size()+50;
+		}		
 
 		// creates the outline for the players hand
 		canvas.setColor(Color.white);
@@ -151,7 +168,7 @@ public class Board extends JComponent {
 			canvas.fill(a.getRect());
 			canvas.setColor(Color.white);
 			canvas.drawString("HP: " + a.getHp(), 60+padding, 390);
-			canvas.drawString("ATK: " + a.getAtk(), 58+padding, 4100);
+			canvas.drawString("ATK: " + a.getAtk(), 58+padding, 400);
 			padding += 500/playedPlayerCards.getCharacters().size()+50;
 		}
 		
@@ -224,7 +241,7 @@ public class Board extends JComponent {
 			if(enemyHand.getCharacters().size() < 8 && enemyDeck.getCharacters().size() > 0) {
 				enemyHand.add(enemyDeck.getCharacters().get(0));
 				enemyDeck.remove(enemyDeck.getCharacters().get(0));
-				System.out.println(enemyDeck.getCharacters().get(0).toString());
+//				System.out.println(enemyDeck.getCharacters().get(0).toString());
 			}				
 		}
 		

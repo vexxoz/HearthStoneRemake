@@ -73,7 +73,7 @@ public class AI {
 				}
 			}
 			
-			//System.out.println(bestPlay.toString());
+			System.out.println(bestPlay.toString());
 			
 			cardsPlayed.add(bestPlay);
 			cardsInHand.remove(bestPlay);
