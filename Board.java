@@ -102,7 +102,7 @@ public class Board extends JComponent {
 //			canvas.drawString("ATK: " + a.getAtk(), 58+padding, 95);
 //			canvas.setColor(Color.black);
 //			canvas.drawString("Cost: " + a.getCost(), 60+padding, 115);
-			padding += 500/enemyHand.getCharacters().size()+50;
+			padding += 500/enemyHand.size()+50;
 			
 			
 		}		
@@ -121,7 +121,7 @@ public class Board extends JComponent {
 			canvas.setColor(Color.white);
 			canvas.drawString("HP: " + a.getHp(), 60+padding, 290);
 			canvas.drawString("ATK: " + a.getAtk(), 58+padding, 300);
-			padding += 500/playedEnemyCards.getCharacters().size()+50;
+			padding += 500/playedEnemyCards.size()+50;
 		}		
 
 		// creates the outline for the players hand
@@ -150,7 +150,7 @@ public class Board extends JComponent {
 			canvas.drawString("ATK: " + a.getAtk(), 58+padding, 555);
 			canvas.setColor(Color.black);
 			canvas.drawString("Cost: " + a.getCost(), 60+padding, 575);
-			padding += 500/playerHand.getCharacters().size()+50;
+			padding += 500/playerHand.size()+50;
 			
 			
 		}
@@ -169,7 +169,7 @@ public class Board extends JComponent {
 			canvas.setColor(Color.white);
 			canvas.drawString("HP: " + a.getHp(), 60+padding, 390);
 			canvas.drawString("ATK: " + a.getAtk(), 58+padding, 400);
-			padding += 500/playedPlayerCards.getCharacters().size()+50;
+			padding += 500/playedPlayerCards.size()+50;
 		}
 		
 		// the mana section background
@@ -200,14 +200,14 @@ public class Board extends JComponent {
 		canvas.drawString("Turn", 960, 545);
 		
 		canvas.setColor(Color.black);
-		String deckCount = playerDeck.getCharacters().size() + "";
+		String deckCount = playerDeck.size() + "";
 		canvas.drawString("Cards: " + deckCount, 940, 570);
 		
 		
 	}
 	
 	public void playCard(Character a) {
-		if(a.getCost() <= mana-usedMana && playedPlayerCards.getCharacters().size() < 8) {
+		if(a.getCost() <= mana-usedMana && playedPlayerCards.size() < 8) {
 			playedPlayerCards.add(a);
 			playerHand.remove(a);
 			usedMana += a.getCost();
@@ -234,13 +234,13 @@ public class Board extends JComponent {
 			}else if(mana == 10) {
 				usedMana = 0;				
 			}			
-			if(playerHand.getCharacters().size() < 8 && playerDeck.getCharacters().size() > 0) {
-				playerHand.add(playerDeck.getCharacters().get(0));
-				playerDeck.remove(playerDeck.getCharacters().get(0));
+			if(playerHand.size() < 8 && playerDeck.size() > 0) {
+				playerHand.add(playerDeck.get(0));
+				playerDeck.remove(playerDeck.get(0));
 			}	
-			if(enemyHand.getCharacters().size() < 8 && enemyDeck.getCharacters().size() > 0) {
-				enemyHand.add(enemyDeck.getCharacters().get(0));
-				enemyDeck.remove(enemyDeck.getCharacters().get(0));
+			if(enemyHand.size() < 8 && enemyDeck.size() > 0) {
+				enemyHand.add(enemyDeck.get(0));
+				enemyDeck.remove(enemyDeck.get(0));
 //				System.out.println(enemyDeck.getCharacters().get(0).toString());
 			}
 			

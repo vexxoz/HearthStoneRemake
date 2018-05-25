@@ -23,15 +23,15 @@ public class AI {
 	
 	public void move() {
 		
-		if(cardsPlayed.getCharacters().size() < 8) {
+		if(cardsPlayed.size() < 8) {
 			
 			int value = 0;
 			
-			while(mana > 0 && cardsInHand.getCharacters().size() > 1) {
-				Character bestPlay = cardsInHand.getCharacters().get(0);
+			while(mana > 0 && cardsInHand.size() > 1) {
+				Character bestPlay = cardsInHand.get(0);
 				int tempValue = 0;
-				for(int i = 1; i<cardsInHand.getCharacters().size();i++) {
-					Character compare = cardsInHand.getCharacters().get(i);
+				for(int i = 1; i<cardsInHand.size();i++) {
+					Character compare = cardsInHand.get(i);
 					if(compare.getCost() <= mana) {
 						if(compare.getAtk() > bestPlay.getAtk()) {
 							if(compare.getAtk()-bestPlay.getAtk() <= 2) {
@@ -88,8 +88,8 @@ public class AI {
 				mana -= bestPlay.getCost();
 				
 			}
-			if(cardsInHand.getCharacters().size() == 1 && playerPlayedCards.getCharacters().size() > 1) {
-				Character bestPlay = cardsInHand.getCharacters().get(0);
+			if(cardsInHand.size() == 1 && playerPlayedCards.size() > 1) {
+				Character bestPlay = cardsInHand.get(0);
 				cardsPlayed.add(bestPlay);
 				cardsInHand.remove(bestPlay);		
 				mana -= bestPlay.getCost();
@@ -100,30 +100,30 @@ public class AI {
 	
 	public void attack() {
 		//for each enemy
-		for(int i = 0; i < cardsPlayed.getCharacters().size(); i++) {
-			Character enemy = cardsPlayed.getCharacters().get(i);
+		for(int i = 0; i < cardsPlayed.size(); i++) {
+			Character enemy = cardsPlayed.get(i);
 			
 			// checks to see if there are any minions to attack
-			if(playerPlayedCards.getCharacters().size() > 1) {
+			if(playerPlayedCards.size() > 1) {
 				int index = 0;
 				
 				
 				// go through all player characters
-				for(int j = 0; j < playerPlayedCards.getCharacters().size(); j++) {			
-					Character player = playerPlayedCards.getCharacters().get(j);
+				for(int j = 0; j < playerPlayedCards.size(); j++) {			
+					Character player = playerPlayedCards.get(j);
 					
 				}
 					
 				
-			}else if(playerPlayedCards.getCharacters().size() == 1){
+			}else if(playerPlayedCards.size() == 1){
 				
-				if(enemy.takeDamage(playerPlayedCards.getCharacters().get(0).getAtk())) {
+				if(enemy.takeDamage(playerPlayedCards.get(0).getAtk())) {
 					System.out.println("Enemy died");
 					cardsPlayed.remove(enemy);
 				}
-				if(playerPlayedCards.getCharacters().get(0).takeDamage(enemy.getAtk())) {
+				if(playerPlayedCards.get(0).takeDamage(enemy.getAtk())) {
 					System.out.println("player died");
-					playerPlayedCards.getCharacters().remove(0);
+					playerPlayedCards.remove(0);
 				}
 				
 			}else{

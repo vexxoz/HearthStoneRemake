@@ -21,12 +21,24 @@ public class Deck {
 		}
 	}
 	
+	public Character get(int value) {
+		return myDeck.get(value);
+	}
+	
 	public void remove(Character c) {
 		myDeck.remove(c);
 	}
 	
+	public void remove(int value) {
+		myDeck.remove(value);
+	}	
+	
 	public void add(Character c) {
 		myDeck.add(c);
+	}
+	
+	public int size() {
+		return myDeck.size();
 	}
 	
 	public List<Character> getCharacters(){
