@@ -242,11 +242,13 @@ public class Board extends JComponent {
 				enemyHand.add(enemyDeck.getCharacters().get(0));
 				enemyDeck.remove(enemyDeck.getCharacters().get(0));
 //				System.out.println(enemyDeck.getCharacters().get(0).toString());
-			}				
+			}
+			
+			
+			enemyAI.enemyTurn(enemyHand, playedEnemyCards, playedPlayerCards, mana);
+			repaint();
+			
 		}
-		
-		enemyAI.move(enemyHand, playedEnemyCards, playedPlayerCards, mana);
-		repaint();
 	}
 	
 	public int getMana() {

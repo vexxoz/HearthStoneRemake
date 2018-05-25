@@ -37,8 +37,14 @@ public class Character {
 		hasMoved = false;
 	}
 
-	public void takeDamage(int damage) {
+	public boolean takeDamage(int damage) {
 		hp -= damage;
+		
+		if(hp <= 0) {
+			return true;
+		}
+		return false;
+		
 	}
 
 	public void reduceCost(int costIn) {
@@ -52,11 +58,19 @@ public class Character {
 	public Rectangle getRect() {
 		return rect;
 	}
-
-	public int getCost() {
-		return cost;
+	
+	public void setName(String nameIn) {
+		name = nameIn;
 	}
 
+	public void setHp(int hpIn) {
+		hp = hpIn;
+	}
+
+	public void setAtk(int atkIn) {
+		atk = atkIn;
+	}
+	
 	public void changeHasMoved() {
 		hasMoved = !hasMoved;
 	}
@@ -69,6 +83,11 @@ public class Character {
 		return name;
 	}
 
+	public int getCost() {
+		return cost;
+	}
+	
+
 	public int getHp() {
 		return hp;
 	}
@@ -77,28 +96,12 @@ public class Character {
 		return atk;
 	}
 
-	// public int getValue() {
-	// return value;
-	// }
-
 	public String getSourceBig() {
 		return bigPhotoSource;
 	}
 
 	public String getSourceLittle() {
 		return littlePhotoSource;
-	}
-
-	public void setName(String nameIn) {
-		name = nameIn;
-	}
-
-	public void setHp(int hpIn) {
-		hp = hpIn;
-	}
-
-	public void setAtk(int atkIn) {
-		atk = atkIn;
 	}
 
 	public String toString() {
