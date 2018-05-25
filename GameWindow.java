@@ -11,14 +11,14 @@ public class GameWindow {
 	
 	public static void main(String[] args) {
 		JFrame frame = new JFrame("HearthStone");
-		frame.setSize(1000, 650);
+		frame.setSize(1000, 500);
 		frame.setResizable(false);
 		
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		
 		JPanel panel = new JPanel();
 		Board myBoard = new Board();
-		myBoard.setPreferredSize(new Dimension(1000, 650));
+		myBoard.setPreferredSize(new Dimension(1000, 500));
 		
 		//mouse clicks
 		class CanvasListener implements MouseListener{

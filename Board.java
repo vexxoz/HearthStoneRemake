@@ -10,34 +10,25 @@ import javax.swing.JComponent;
 
 public class Board extends JComponent {
 	
-	//Game board photos
+	//photos
 	BufferedImage postIcon;
 	BufferedImage postIconUsed;
 	BufferedImage gameAreaTexture;
 	BufferedImage postBackground;
-	BufferedImage cardBacks;
 	
-	//player Decks
+	
+	//variables
 	private Deck playerDeck;
 	private Deck playedPlayerCards;
 	private Deck playerHand;
-	
-	//enemy decks
-	AI enemyAI;
-	private Deck enemyDeck;
-	private Deck playedEnemyCards;
-	private Deck enemyHand;
-	
-	
-	//All variables
-	private static int mana;
-	private static int usedMana;
+	private int mana;
+	private int usedMana;
 	
 	// turn button object
-	private Rectangle nextTurnButton = new Rectangle(950,510,50,40);
+	private Rectangle nextTurnButton = new Rectangle(950,390,50,40);
 	
 	// game area rectangle object
-	private Rectangle gameArea = new Rectangle(0, 120, 950, 390);
+	private Rectangle gameArea = new Rectangle(0, 0, 950, 390);
 	
 	public Board() {
 		super();
@@ -47,7 +38,6 @@ public class Board extends JComponent {
 			postIconUsed = ImageIO.read(new File("postIconUsed.png"));
 			gameAreaTexture = ImageIO.read(new File("background.jpg"));
 			postBackground = ImageIO.read(new File("postBackground.jpg"));
-			cardBacks = ImageIO.read(new File("cardBacks.png"));
 		}catch(Exception e) {
 			System.out.println(e.getMessage());
 		}
@@ -55,102 +45,59 @@ public class Board extends JComponent {
 		// The players deck
 		// max hand is 8
 		// 
+		
 		playerDeck = new Deck();
-		playerDeck.startingDeck(5);
+		playerDeck.startingDeck(0);
 		
 		playerHand = new Deck();
-		playerHand.startingDeck(5);
+		playerHand.startingDeck(8);
 		
 		playedPlayerCards = new Deck();
 		
+		// array of cards played on the board
 		
-		// enemy deck instantiations
-		enemyAI = new AI();
-		enemyDeck = new Deck();
-		enemyDeck.startingDeck(20);
 		
-		enemyHand = new Deck();
-		enemyHand.startingDeck(5);
-		
-		playedEnemyCards = new Deck();
-		
+		// print the decks stats to console
+		System.out.println(playerDeck);
 		
 		// set the starting mana for the player
 		// max mana is 10
 		mana = 1;
 		usedMana = 0;
+		System.out.println("Mana: " + mana);
+		System.out.println("Used Mana: " + usedMana);
 	}
 	
 	public void paintComponent(Graphics g) {
 		Graphics2D canvas = (Graphics2D) g;
 		
 		// sets the game board
-		canvas.drawImage(gameAreaTexture, 0,120,null);
+		canvas.drawImage(gameAreaTexture, 0,0,null);
 		canvas.setColor(new Color(255,255,255,1));
 		canvas.fill(gameArea);
 		
-		// prints a maximum of 8 cards in the enemy's hand
+		// creates the outline for the players hand
+		canvas.setColor(Color.blue);
 		int padding = 0;
-		for(Character a : enemyHand.getCharacters()) {
-			try {
-				canvas.drawImage(cardBacks, 20+padding, 5, null);
-			}catch (Exception e) {
-				System.out.println(e.getMessage());
-			}
-//			canvas.setColor(Color.white);
-//			canvas.drawString("HP: " + a.getHp(), 60+padding, 75);
-//			canvas.drawString("ATK: " + a.getAtk(), 58+padding, 95);
-//			canvas.setColor(Color.black);
-//			canvas.drawString("Cost: " + a.getCost(), 60+padding, 115);
-			padding += 500/enemyHand.size()+50;
-			
-			
-		}		
-		
-		// prints all the cards the player has played
-		padding = 0;
-		for(Character a : playedEnemyCards.getCharacters()) {
-			try {
-				canvas.drawImage(ImageIO.read(new File(a.getSourceLittle())), 50+padding, 270, null);
-			}catch (Exception e) {
-				System.out.println(e.getMessage());
-			}
-			a.setRect(100+padding, 270);
-			canvas.setColor(new Color(255,255,255,1));
-			canvas.fill(a.getRect());
-			canvas.setColor(Color.white);
-			canvas.drawString("HP: " + a.getHp(), 60+padding, 290);
-			canvas.drawString("ATK: " + a.getAtk(), 58+padding, 300);
-			padding += 500/playedEnemyCards.size()+50;
-		}		
-
-		// creates the outline for the players hand
-		canvas.setColor(Color.white);
-		canvas.drawString("ENEMY HAND", 15, 140);
-		canvas.drawLine(0, 120, 1000, 120);	
-		
-		// creates the outline for the players hand
-		canvas.setColor(Color.white);
-		canvas.drawString("YOUR HAND", 15, 495);
-		canvas.drawLine(0, 510, 1000, 510);
+		canvas.drawString("YOUR HAND", 15, 385);
+		canvas.drawLine(0, 390, 1000, 390);
 		
 		// prints a maximum of 8 cards in the players hand
-		padding = 0;
 		for(Character a : playerHand.getCharacters()) {
 			try {
-				canvas.drawImage(ImageIO.read(new File(a.getSourceBig())), 20+padding, 515, null);
+				canvas.drawImage(ImageIO.read(new File(a.getSource())), 50+padding, 400, null);
 			}catch (Exception e) {
 				System.out.println(e.getMessage());
 			}
-			a.setRect(20+padding, 515);
+			a.setRect(50+padding, 400);
 			canvas.setColor(new Color(255,255,255,1));			
 			canvas.fill(a.getRect());
 			canvas.setColor(Color.white);
-			canvas.drawString("HP: " + a.getHp(), 60+padding, 535);
-			canvas.drawString("ATK: " + a.getAtk(), 58+padding, 555);
+			canvas.drawString("HP: " + a.getHp(), 60+padding, 420);
+			canvas.drawString("ATK: " + a.getAtk(), 58+padding, 440);
 			canvas.setColor(Color.black);
-			canvas.drawString("Cost: " + a.getCost(), 60+padding, 575);
-			padding += 500/playerHand.size()+50;
+			canvas.drawString("Cost: " + a.getCost(), 60+padding, 460);
+			padding += 500/playerHand.getCharacters().size()+50;
 			
 			
 		}
@@ -159,35 +106,35 @@ public class Board extends JComponent {
 		padding = 0;
 		for(Character a : playedPlayerCards.getCharacters()) {
 			try {
-				canvas.drawImage(ImageIO.read(new File(a.getSourceLittle())), 50+padding, 370, null);
+				canvas.drawImage(ImageIO.read(new File(a.getSource())), 50+padding, 250, null);
 			}catch (Exception e) {
 				System.out.println(e.getMessage());
 			}
-			a.setRect(100+padding, 370);
+			a.setRect(50+padding, 250);
 			canvas.setColor(new Color(255,255,255,1));
 			canvas.fill(a.getRect());
 			canvas.setColor(Color.white);
-			canvas.drawString("HP: " + a.getHp(), 60+padding, 390);
-			canvas.drawString("ATK: " + a.getAtk(), 58+padding, 400);
-			padding += 500/playedPlayerCards.size()+50;
+			canvas.drawString("HP: " + a.getHp(), 60+padding, 270);
+			canvas.drawString("ATK: " + a.getAtk(), 58+padding, 290);
+			padding += 500/playedPlayerCards.getCharacters().size()+50;
 		}
 		
 		// the mana section background
-		canvas.drawImage(postBackground, 950, 120, null);
+		canvas.drawImage(postBackground, 950, 0, null);
 		
 		// mana section titles
 		canvas.setColor(Color.white);
-		canvas.drawString("Posts:", 950, 130);
+		canvas.drawString("Posts:", 950, 10);
 		
 		// prints the mana gems on the side
 		padding = 0;
 		for(int i = 1; i<= mana-usedMana;i++) {
-			canvas.drawImage(postIcon, 955, 150+padding, null);
+			canvas.drawImage(postIcon, 955, 30+padding, null);
 			padding += 35;
 		}
 		//canvas.setColor(Color.black);
 		for(int i = mana-usedMana; i< mana;i++) {
-			canvas.drawImage(postIconUsed, 955, 150+padding, null);
+			canvas.drawImage(postIconUsed, 955, 30+padding, null);
 			padding += 35;
 		}		
 		
@@ -196,28 +143,31 @@ public class Board extends JComponent {
 		
 		canvas.fill(nextTurnButton);
 		canvas.setColor(Color.white);
-		canvas.drawString("Next", 960, 525);
-		canvas.drawString("Turn", 960, 545);
+		canvas.drawString("Next", 960, 405);
+		canvas.drawString("Turn", 960, 425);
 		
 		canvas.setColor(Color.black);
-		String deckCount = playerDeck.size() + "";
-		canvas.drawString("Cards: " + deckCount, 940, 570);
+		String deckCount = playerDeck.getCharacters().size() + "";
+		canvas.drawString("Cards: " + deckCount, 940, 450);
 		
 		
 	}
 	
 	public void playCard(Character a) {
-		if(a.getCost() <= mana-usedMana && playedPlayerCards.size() < 8) {
+		if(a.getCost() <= mana-usedMana && playedPlayerCards.getCharacters().size() < 8) {
 			playedPlayerCards.add(a);
 			playerHand.remove(a);
 			usedMana += a.getCost();
 			repaint();			
 		}
+		System.out.println("Mana: " + mana);
+		System.out.println("Used Mana: " + usedMana);
 	}
 	
 	public Character cardHighlight(int x, int y) {
 		for(Character a: playerHand.getCharacters()) {
 			if(a.getRect().contains(x, y)) {
+				System.out.println(a.toString());
 				return a;
 			}
 		}
@@ -230,29 +180,21 @@ public class Board extends JComponent {
 		if(nextTurnButton.contains(x, y)) {
 			if(mana < 10) {		
 				mana++;
-				usedMana = 0;		
-			}else if(mana == 10) {
-				usedMana = 0;				
+				usedMana = 0;
+				if(playerHand.getCharacters().size() < 8 && playerDeck.getCharacters().size() > 0) {
+					playerHand.add(playerDeck.getCharacters().get(0));
+					playerDeck.remove(playerDeck.getCharacters().get(0));
+				}				
 			}			
-			if(playerHand.size() < 8 && playerDeck.size() > 0) {
-				playerHand.add(playerDeck.get(0));
-				playerDeck.remove(playerDeck.get(0));
-			}	
-			if(enemyHand.size() < 8 && enemyDeck.size() > 0) {
-				enemyHand.add(enemyDeck.get(0));
-				enemyDeck.remove(enemyDeck.get(0));
-//				System.out.println(enemyDeck.getCharacters().get(0).toString());
-			}
-			
-			
-			enemyAI.enemyTurn(enemyHand, playedEnemyCards, playedPlayerCards, mana);
-			repaint();
-			
+			if(mana == 10) {
+				usedMana = 0;
+				if(playerHand.getCharacters().size() < 8 && playerDeck.getCharacters().size() > 0) {
+					playerHand.add(playerDeck.getCharacters().get(0));
+					playerDeck.remove(playerDeck.getCharacters().get(0));
+				}					
+			}			
 		}
-	}
-	
-	public int getMana() {
-		return mana;
+		repaint();
 	}
 	
 	public Rectangle getGameArea() {
