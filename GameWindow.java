@@ -56,6 +56,7 @@ public class GameWindow {
 				if(selectedAlly != null) {
 					for(Character c : myBoard.getEnemyCards().getCharacters()) {
 						if(c.getRect().contains(x,y)) {
+							System.out.println("released on enemy");
 							myBoard.playerAttack(selectedAlly, c);
 						}
 					}

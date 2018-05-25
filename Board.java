@@ -115,7 +115,7 @@ public class Board extends JComponent {
 			}catch (Exception e) {
 				System.out.println(e.getMessage());
 			}
-			a.setRect(100+padding, 270);
+			a.setRect(50+padding, 270, 50,  50);
 			canvas.setColor(new Color(255,255,255,1));
 			canvas.fill(a.getRect());
 			canvas.setColor(Color.white);
@@ -163,7 +163,7 @@ public class Board extends JComponent {
 			}catch (Exception e) {
 				System.out.println(e.getMessage());
 			}
-			a.setRect(100+padding, 370);
+			a.setRect(50+padding, 370, 50,50);
 			canvas.setColor(new Color(255,255,255,1));
 			canvas.fill(a.getRect());
 			canvas.setColor(Color.white);
@@ -270,8 +270,10 @@ public class Board extends JComponent {
 		}
 		if(attackingCard.takeDamage(enemyCard.getAtk())) {
 			System.out.println("player died");
+			System.out.println(attackingCard);
 			playedPlayerCards.remove(attackingCard);
 		}	
+		repaint();
 	}
 	
 	public Deck getEnemyCards(){

@@ -57,6 +57,11 @@ public class Character {
 		rect.setLocation(x, y);
 	}
 
+	public void setRect(int x, int y, int width, int height) {
+		rect.setLocation(x, y);
+		rect.setSize(width, height);
+	}	
+
 	public Rectangle getRect() {
 		return rect;
 	}

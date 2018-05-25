@@ -148,7 +148,7 @@ public class AI {
 					}
 					
 				}else{
-					System.out.println("No minion to attack");
+					//System.out.println("No minion to attack");
 					//attack face
 				}
 	
