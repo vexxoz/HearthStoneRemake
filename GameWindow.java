@@ -31,7 +31,7 @@ public class GameWindow {
 
 			@Override
 			public void mouseEntered(MouseEvent p) {
-
+				
 			}
 
 			@Override
@@ -44,9 +44,9 @@ public class GameWindow {
 			public void mousePressed(MouseEvent p) {
 				int x = p.getX();
 				int y = p.getY();
-				myBoard.nextTurn(x,y);
-				selectedAlly = myBoard.cardHighlight(x, y);
-				
+				if(!myBoard.nextTurn(x,y)) {
+					selectedAlly = myBoard.selectedPlayerCard(x, y);
+				}
 			}
 
 			@Override
@@ -54,6 +54,11 @@ public class GameWindow {
 				int x = p.getX();
 				int y = p.getY();
 				if(selectedAlly != null) {
+					for(Character c : myBoard.getEnemyCards().getCharacters()) {
+						if(c.getRect().contains(x,y)) {
+							myBoard.playerAttack(selectedAlly, c);
+						}
+					}
 					if(myBoard.getGameArea().contains(x,y)) {
 						myBoard.playCard(selectedAlly);
 					}

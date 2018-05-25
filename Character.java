@@ -44,6 +44,10 @@ public class Character {
 		return false;
 		
 	}
+	
+	public void highlight() {
+		
+	}
 
 	public void reduceCost(int costIn) {
 		cost -= costIn;
