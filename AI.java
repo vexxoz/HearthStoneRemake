@@ -102,40 +102,60 @@ public class AI {
 		//for each enemy
 		for(int i = 0; i < cardsPlayed.size(); i++) {
 			Character enemy = cardsPlayed.get(i);
-			
-			// checks to see if there are any minions to attack
-			if(playerPlayedCards.size() > 1) {
-				int index = 0;
-				
-				
-				// go through all player characters
-				for(int j = 0; j < playerPlayedCards.size(); j++) {			
-					Character player = playerPlayedCards.get(j);
+			if(!enemy.getHasMoved()) {
+				// checks to see if there are any minions to attack
+				if(playerPlayedCards.size() > 1) {
+					int index = 0;
+					int bestValue = 0;
 					
-				}
+					// go through all player characters
+					for(int j = 0; j < playerPlayedCards.size(); j++) {	
+						Character player = playerPlayedCards.get(j);
+						int value = 0;
+						
+						if(enemy.getAtk() >= player.getHp()) {
+							value += 5;
+						}
+						if(enemy.getHp() > player.getAtk()) {
+							value += 5;
+						}
+						
+						if(value>bestValue) {
+							index = j;
+							bestValue = value;
+						}
+						
+					}
+						
+					if(enemy.takeDamage(playerPlayedCards.get(index).getAtk())) {
+						System.out.println("Enemy died");
+						cardsPlayed.remove(enemy);
+					}
+					if(playerPlayedCards.get(index).takeDamage(enemy.getAtk())) {
+						System.out.println("player died");
+						playerPlayedCards.remove(index);
+					}				
 					
-				
-			}else if(playerPlayedCards.size() == 1){
-				
-				if(enemy.takeDamage(playerPlayedCards.get(0).getAtk())) {
-					System.out.println("Enemy died");
-					cardsPlayed.remove(enemy);
+				}else if(playerPlayedCards.size() == 1){
+					
+					if(enemy.takeDamage(playerPlayedCards.get(0).getAtk())) {
+						System.out.println("Enemy died");
+						cardsPlayed.remove(enemy);
+					}
+					if(playerPlayedCards.get(0).takeDamage(enemy.getAtk())) {
+						System.out.println("player died");
+						playerPlayedCards.remove(0);
+					}
+					
+				}else{
+					System.out.println("No minion to attack");
+					//attack face
 				}
-				if(playerPlayedCards.get(0).takeDamage(enemy.getAtk())) {
-					System.out.println("player died");
-					playerPlayedCards.remove(0);
-				}
-				
-			}else{
-				System.out.println("No minion to attack");
-				//attack face
+	
 			}
-
-			
 		}
 
 	}
-	
 	
 	
 }

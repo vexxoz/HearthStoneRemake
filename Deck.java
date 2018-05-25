@@ -21,6 +21,12 @@ public class Deck {
 		}
 	}
 	
+	public void refreshCards() {
+		for(Character c : myDeck) {
+			c.changeHasMovedFalse();
+		}
+	}
+	
 	public Character get(int value) {
 		return myDeck.get(value);
 	}

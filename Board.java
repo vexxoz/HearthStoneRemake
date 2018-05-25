@@ -246,6 +246,8 @@ public class Board extends JComponent {
 			
 			
 			enemyAI.enemyTurn(enemyHand, playedEnemyCards, playedPlayerCards, mana);
+			playedPlayerCards.refreshCards();
+			playedEnemyCards.refreshCards();
 			repaint();
 			
 		}

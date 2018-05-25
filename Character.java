@@ -7,9 +7,7 @@ public class Character {
 	private int atk;
 	private String bigPhotoSource;
 	private String littlePhotoSource;
-	// How much the card costs
 	private int cost;
-	//
 	private Rectangle rect;
 	private boolean hasMoved;
 
@@ -22,7 +20,7 @@ public class Character {
 		bigPhotoSource = "";
 		littlePhotoSource = "";
 		rect = new Rectangle(0, 0, 0, 0);
-		hasMoved = false;
+		hasMoved = true;
 	}
 
 	public Character(String nameIn, int hpIn, int atkIn, int costIn, String bigPhotoIn, String littlePhotoIn) {
@@ -34,7 +32,7 @@ public class Character {
 		bigPhotoSource = bigPhotoIn;
 		littlePhotoSource = littlePhotoIn;
 		rect = new Rectangle(0, 0, 100, 100);
-		hasMoved = false;
+		hasMoved = true;
 	}
 
 	public boolean takeDamage(int damage) {
@@ -71,10 +69,14 @@ public class Character {
 		atk = atkIn;
 	}
 	
-	public void changeHasMoved() {
-		hasMoved = !hasMoved;
+	public void changeHasMovedTrue() {
+		hasMoved = true;
 	}
 
+	public void changeHasMovedFalse() {
+		hasMoved = false;
+	}
+	
 	public boolean getHasMoved() {
 		return hasMoved;
 	}
