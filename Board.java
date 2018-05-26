@@ -115,7 +115,7 @@ public class Board extends JComponent {
 			}catch (Exception e) {
 				System.out.println(e.getMessage());
 			}
-			a.setRect(100+padding, 270);
+			a.setRect(50+padding, 270, 50,  50);
 			canvas.setColor(new Color(255,255,255,1));
 			canvas.fill(a.getRect());
 			canvas.setColor(Color.white);
@@ -163,7 +163,7 @@ public class Board extends JComponent {
 			}catch (Exception e) {
 				System.out.println(e.getMessage());
 			}
-			a.setRect(100+padding, 370);
+			a.setRect(50+padding, 370, 50,50);
 			canvas.setColor(new Color(255,255,255,1));
 			canvas.fill(a.getRect());
 			canvas.setColor(Color.white);
@@ -208,6 +208,7 @@ public class Board extends JComponent {
 	
 	public void playCard(Character a) {
 		if(a.getCost() <= mana-usedMana && playedPlayerCards.size() < 8) {
+			System.out.println("Played Card from hand");
 			playedPlayerCards.add(a);
 			playerHand.remove(a);
 			usedMana += a.getCost();
@@ -215,18 +216,28 @@ public class Board extends JComponent {
 		}
 	}
 	
-	public Character cardHighlight(int x, int y) {
-		for(Character a: playerHand.getCharacters()) {
-			if(a.getRect().contains(x, y)) {
-				return a;
+	public Character selectedPlayerCard(int x, int y) {
+		for(Character c : playerHand.getCharacters()) {
+			if(c.getRect().contains(x, y)) {
+				System.out.println("Selected Card from hand");
+				return c;
 			}
 		}
+		for(Character c : playedPlayerCards.getCharacters()) {
+			if(c.getRect().contains(x, y)) {
+				System.out.println("Selected Card from board");
+				if(c.getHasMoved()) {
+					return null;
+				}
+				return c;
+			}
+		}		
 		return null;
 		//repaint();
 		
 	}
 	
-	public void nextTurn(int x, int y) {
+	public boolean nextTurn(int x, int y) {
 		if(nextTurnButton.contains(x, y)) {
 			if(mana < 10) {		
 				mana++;
@@ -249,12 +260,28 @@ public class Board extends JComponent {
 			playedPlayerCards.refreshCards();
 			playedEnemyCards.refreshCards();
 			repaint();
-			
+			return true;
+		}else {
+			return false;
 		}
 	}
 	
-	public int getMana() {
-		return mana;
+	public void playerAttack(Character attackingCard, Character enemyCard) {
+		attackingCard.changeHasMovedTrue();
+		if(enemyCard.takeDamage(attackingCard.getAtk())) {
+			System.out.println("Enemy died");
+			playedEnemyCards.remove(enemyCard);
+		}
+		if(attackingCard.takeDamage(enemyCard.getAtk())) {
+			System.out.println("player died");
+			System.out.println(attackingCard);
+			playedPlayerCards.remove(attackingCard);
+		}
+		repaint();
+	}
+	
+	public Deck getEnemyCards(){
+		return playedEnemyCards;
 	}
 	
 	public Rectangle getGameArea() {

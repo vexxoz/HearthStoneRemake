@@ -44,6 +44,10 @@ public class Character {
 		return false;
 		
 	}
+	
+	public void highlight() {
+		
+	}
 
 	public void reduceCost(int costIn) {
 		cost -= costIn;
@@ -52,6 +56,11 @@ public class Character {
 	public void setRect(int x, int y) {
 		rect.setLocation(x, y);
 	}
+
+	public void setRect(int x, int y, int width, int height) {
+		rect.setLocation(x, y);
+		rect.setSize(width, height);
+	}	
 
 	public Rectangle getRect() {
 		return rect;
