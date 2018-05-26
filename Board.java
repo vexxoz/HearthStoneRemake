@@ -226,6 +226,9 @@ public class Board extends JComponent {
 		for(Character c : playedPlayerCards.getCharacters()) {
 			if(c.getRect().contains(x, y)) {
 				System.out.println("Selected Card from board");
+				if(c.getHasMoved()) {
+					return null;
+				}
 				return c;
 			}
 		}		
@@ -264,6 +267,7 @@ public class Board extends JComponent {
 	}
 	
 	public void playerAttack(Character attackingCard, Character enemyCard) {
+		attackingCard.changeHasMovedTrue();
 		if(enemyCard.takeDamage(attackingCard.getAtk())) {
 			System.out.println("Enemy died");
 			playedEnemyCards.remove(enemyCard);
@@ -272,7 +276,7 @@ public class Board extends JComponent {
 			System.out.println("player died");
 			System.out.println(attackingCard);
 			playedPlayerCards.remove(attackingCard);
-		}	
+		}
 		repaint();
 	}
 	

@@ -54,13 +54,16 @@ public class GameWindow {
 				int x = p.getX();
 				int y = p.getY();
 				if(selectedAlly != null) {
+					boolean isEnemy = false;
 					for(Character c : myBoard.getEnemyCards().getCharacters()) {
 						if(c.getRect().contains(x,y)) {
 							System.out.println("released on enemy");
 							myBoard.playerAttack(selectedAlly, c);
+							isEnemy = true;
+							break;
 						}
 					}
-					if(myBoard.getGameArea().contains(x,y)) {
+					if(myBoard.getGameArea().contains(x,y) && !isEnemy) {
 						myBoard.playCard(selectedAlly);
 					}
 				}
