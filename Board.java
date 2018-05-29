@@ -4,9 +4,13 @@ import java.awt.Graphics2D;
 import java.awt.Rectangle;
 import java.awt.image.BufferedImage;
 import java.io.File;
+import java.nio.file.Path;
 
 import javax.imageio.ImageIO;
 import javax.swing.JComponent;
+
+//import javafx.animation.Animation;
+
 
 public class Board extends JComponent {
 	
@@ -110,14 +114,16 @@ public class Board extends JComponent {
 		// prints all the cards the player has played
 		padding = 0;
 		for(Character a : playedEnemyCards.getCharacters()) {
+			a.setRect(50+padding, 270, 50,  50);
 			try {
 				canvas.drawImage(ImageIO.read(new File(a.getSourceLittle())), 50+padding, 270, null);
+				canvas.setColor(new Color(255,255,255,1));
+				canvas.fill(a.getRect());
 			}catch (Exception e) {
-				System.out.println(e.getMessage());
+				canvas.setColor(Color.red);
+				canvas.fill(a.getRect());
+//				System.out.println(e.getMessage());
 			}
-			a.setRect(50+padding, 270, 50,  50);
-			canvas.setColor(new Color(255,255,255,1));
-			canvas.fill(a.getRect());
 			canvas.setColor(Color.white);
 			canvas.drawString("HP: " + a.getHp(), 60+padding, 290);
 			canvas.drawString("ATK: " + a.getAtk(), 58+padding, 300);
@@ -137,14 +143,16 @@ public class Board extends JComponent {
 		// prints a maximum of 8 cards in the players hand
 		padding = 0;
 		for(Character a : playerHand.getCharacters()) {
+			a.setRect(20+padding, 515);
 			try {
 				canvas.drawImage(ImageIO.read(new File(a.getSourceBig())), 20+padding, 515, null);
+				canvas.setColor(new Color(255,255,255,1));			
+				canvas.fill(a.getRect());
 			}catch (Exception e) {
-				System.out.println(e.getMessage());
+				canvas.setColor(Color.red);
+				canvas.fill(a.getRect());
+//				System.out.println(e.getMessage());
 			}
-			a.setRect(20+padding, 515);
-			canvas.setColor(new Color(255,255,255,1));			
-			canvas.fill(a.getRect());
 			canvas.setColor(Color.white);
 			canvas.drawString("HP: " + a.getHp(), 60+padding, 535);
 			canvas.drawString("ATK: " + a.getAtk(), 58+padding, 555);
@@ -158,14 +166,16 @@ public class Board extends JComponent {
 		// prints all the cards the player has played
 		padding = 0;
 		for(Character a : playedPlayerCards.getCharacters()) {
+			a.setRect(50+padding, 370, 50,50);
 			try {
 				canvas.drawImage(ImageIO.read(new File(a.getSourceLittle())), 50+padding, 370, null);
+				canvas.setColor(new Color(255,255,255,1));
+				canvas.fill(a.getRect());
 			}catch (Exception e) {
+				canvas.setColor(Color.red);
+				canvas.fill(a.getRect());
 				System.out.println(e.getMessage());
 			}
-			a.setRect(50+padding, 370, 50,50);
-			canvas.setColor(new Color(255,255,255,1));
-			canvas.fill(a.getRect());
 			canvas.setColor(Color.white);
 			canvas.drawString("HP: " + a.getHp(), 60+padding, 390);
 			canvas.drawString("ATK: " + a.getAtk(), 58+padding, 400);

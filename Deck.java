@@ -1,16 +1,29 @@
 import java.util.ArrayList;
 import java.util.List;
 
-
+/**
+ * 
+ * @author 18caldwellblake
+ * Deck class for decks of cards
+ *
+ */
 public class Deck {
 	List<Character> myDeck;
 	static AllCards cards = new AllCards();
 	
+	
+	/**
+	 * Constructor for the Deck class 
+	 */
 	public Deck() {	
 		
 		myDeck = new ArrayList<Character>();
 	}
 	
+	/**
+	 * @param cardsTotal - how many cards to put into this deck
+	 * 
+	 */
 	public void startingDeck(int cardsTotal) {
 
 		for(int i=0; i<cardsTotal;i++) {
@@ -21,12 +34,20 @@ public class Deck {
 		}
 	}
 	
+	/**
+	 * Sets every card hasMoved to false meaning it can attack
+	 */
 	public void refreshCards() {
 		for(Character c : myDeck) {
 			c.changeHasMovedFalse();
 		}
 	}
 	
+	/**
+	 * 
+	 * @param value index of Deck array
+	 * @return character from the Deck
+	 */
 	public Character get(int value) {
 		return myDeck.get(value);
 	}
