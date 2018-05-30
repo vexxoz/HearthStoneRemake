@@ -1,6 +1,6 @@
 import java.awt.Rectangle;
 
-public class Character {
+public class Character implements Card{
 	private String name;
 	private String type;
 	private int hp;
@@ -17,6 +17,7 @@ public class Character {
 		hp = 0;
 		atk = 0;
 		cost = 0;
+		type = "Character";
 		bigPhotoSource = "";
 		littlePhotoSource = "";
 		rect = new Rectangle(0, 0, 0, 0);
@@ -29,6 +30,7 @@ public class Character {
 		hp = hpIn;
 		atk = atkIn;
 		cost = costIn;
+		type = "Character";
 		bigPhotoSource = bigPhotoIn;
 		littlePhotoSource = littlePhotoIn;
 		rect = new Rectangle(0, 0, 100, 100);
@@ -42,10 +44,6 @@ public class Character {
 			return true;
 		}
 		return false;
-		
-	}
-	
-	public void highlight() {
 		
 	}
 

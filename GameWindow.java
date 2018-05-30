@@ -7,7 +7,7 @@ import javax.swing.JPanel;
 
 public class GameWindow {
 
-	private static Character selectedAlly;
+	private static Card selectedAlly;
 	
 	public static void main(String[] args) {
 		JFrame frame = new JFrame("HearthStone");

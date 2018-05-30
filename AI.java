@@ -1,9 +1,10 @@
+import java.util.List;
 
 public class AI {
 
-	private Deck cardsInHand;
-	private Deck cardsPlayed;
-	private Deck playerPlayedCards;
+	private List<Character> cardsInHand;
+	private List<Character> cardsPlayed;
+	private List<Character> playerPlayedCards;
 	private int mana;
 	
 	
@@ -12,9 +13,9 @@ public class AI {
 	}
 	
 	public void enemyTurn(Deck cardsInHandIn, Deck cardsPlayedIn, Deck playedPlayerCardsIn, int manaIn) {
-		cardsInHand = cardsInHandIn;
-		cardsPlayed = cardsPlayedIn;
-		playerPlayedCards = playedPlayerCardsIn;
+		cardsInHand = cardsInHandIn.getCharacters();
+		cardsPlayed = cardsPlayedIn.getCharacters();
+		playerPlayedCards = playedPlayerCardsIn.getCharacters();
 		mana = manaIn;
 		
 		move();
@@ -28,10 +29,10 @@ public class AI {
 			int value = 0;
 			
 			while(mana > 0 && cardsInHand.size() > 1) {
-				Character bestPlay = cardsInHand.get(0);
+				Character bestPlay = (Character) cardsInHand.get(0);
 				int tempValue = 0;
 				for(int i = 1; i<cardsInHand.size();i++) {
-					Character compare = cardsInHand.get(i);
+					Character compare = (Character) cardsInHand.get(i);
 					if(compare.getCost() <= mana) {
 						if(compare.getAtk() > bestPlay.getAtk()) {
 							if(compare.getAtk()-bestPlay.getAtk() <= 2) {

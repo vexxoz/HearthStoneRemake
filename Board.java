@@ -9,6 +9,8 @@ import java.nio.file.Path;
 import javax.imageio.ImageIO;
 import javax.swing.JComponent;
 
+import org.omg.CORBA.Object;
+
 //import javafx.animation.Animation;
 
 
@@ -95,7 +97,7 @@ public class Board extends JComponent {
 		
 		// prints a maximum of 8 cards in the enemy's hand
 		int padding = 0;
-		for(Character a : enemyHand.getCharacters()) {
+		for(Card o : enemyHand.getCards()) {
 			try {
 				canvas.drawImage(cardBacks, 20+padding, 5, null);
 			}catch (Exception e) {
@@ -142,7 +144,8 @@ public class Board extends JComponent {
 		
 		// prints a maximum of 8 cards in the players hand
 		padding = 0;
-		for(Character a : playerHand.getCharacters()) {
+		for(Card a : playerHand.getCards()) {
+			
 			a.setRect(20+padding, 515);
 			try {
 				canvas.drawImage(ImageIO.read(new File(a.getSourceBig())), 20+padding, 515, null);
@@ -153,13 +156,29 @@ public class Board extends JComponent {
 				canvas.fill(a.getRect());
 //				System.out.println(e.getMessage());
 			}
-			canvas.setColor(Color.white);
-			canvas.drawString("HP: " + a.getHp(), 60+padding, 535);
-			canvas.drawString("ATK: " + a.getAtk(), 58+padding, 555);
-			canvas.setColor(Color.black);
-			canvas.drawString("Cost: " + a.getCost(), 60+padding, 575);
-			padding += 500/playerHand.size()+50;
 			
+			if(a.getClass().equals("Character")) {
+				Character c = (Character)a;
+				canvas.setColor(Color.white);
+				canvas.drawString("HP: " + c.getHp(), 60+padding, 535);
+				canvas.drawString("ATK: " + c.getAtk(), 58+padding, 555);
+				canvas.setColor(Color.black);
+				canvas.drawString("Cost: " + c.getCost(), 60+padding, 575);
+				padding += 500/playerHand.size()+50;
+			}if(a.getClass().equals("Spell")) {
+				Spell c = (Spell)a;
+				canvas.setColor(Color.white);
+				if(c.getType().equals("heal")) {
+					canvas.drawString("Heal: " + c.getHeal(), 60+padding, 535);	
+				}if(c.getType().equals("damage")) {
+					canvas.drawString("Damage: " + c.getDamage(), 60+padding, 535);	
+				}
+				canvas.setColor(Color.black);
+				canvas.drawString("Cost: " + c.getCost(), 60+padding, 575);
+				padding += 500/playerHand.size()+50;
+			}else {
+				System.out.println("ERROR: UNKNOWN CARD IN DECK");
+			}
 			
 		}
 		
@@ -216,7 +235,7 @@ public class Board extends JComponent {
 		
 	}
 	
-	public void playCard(Character a) {
+	public void playCard(Card a) {
 		if(a.getCost() <= mana-usedMana && playedPlayerCards.size() < 8) {
 			System.out.println("Played Card from hand");
 			playedPlayerCards.add(a);
@@ -226,8 +245,8 @@ public class Board extends JComponent {
 		}
 	}
 	
-	public Character selectedPlayerCard(int x, int y) {
-		for(Character c : playerHand.getCharacters()) {
+	public Card selectedPlayerCard(int x, int y) {
+		for(Card c : playerHand.getCards()) {
 			if(c.getRect().contains(x, y)) {
 				System.out.println("Selected Card from hand");
 				return c;
@@ -276,18 +295,22 @@ public class Board extends JComponent {
 		}
 	}
 	
-	public void playerAttack(Character attackingCard, Character enemyCard) {
-		attackingCard.changeHasMovedTrue();
-		if(enemyCard.takeDamage(attackingCard.getAtk())) {
-			System.out.println("Enemy died");
-			playedEnemyCards.remove(enemyCard);
+	public void playerAttack(Card attackingCardIn, Card enemyCardIn) {
+		if(attackingCardIn.getClass().equals("Character") && enemyCardIn.getClass().equals("Character")) {
+			Character attackingCard = (Character) attackingCardIn;
+			Character enemyCard = (Character) enemyCardIn;
+			attackingCard.changeHasMovedTrue();
+			if(enemyCard.takeDamage(attackingCard.getAtk())) {
+				System.out.println("Enemy died");
+				playedEnemyCards.remove(enemyCard);
+			}
+			if(attackingCard.takeDamage(enemyCard.getAtk())) {
+				System.out.println("player died");
+				System.out.println(attackingCard);
+				playedPlayerCards.remove(attackingCard);
+			}
+			repaint();
 		}
-		if(attackingCard.takeDamage(enemyCard.getAtk())) {
-			System.out.println("player died");
-			System.out.println(attackingCard);
-			playedPlayerCards.remove(attackingCard);
-		}
-		repaint();
 	}
 	
 	public Deck getEnemyCards(){

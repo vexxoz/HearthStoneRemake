@@ -8,7 +8,7 @@ import java.util.List;
  *
  */
 public class Deck {
-	List<Character> myDeck;
+	List<Card> myDeck;
 	static AllCards cards = new AllCards();
 	
 	
@@ -17,7 +17,7 @@ public class Deck {
 	 */
 	public Deck() {	
 		
-		myDeck = new ArrayList<Character>();
+		myDeck = new ArrayList<Card>();
 	}
 	
 	/**
@@ -38,8 +38,11 @@ public class Deck {
 	 * Sets every card hasMoved to false meaning it can attack
 	 */
 	public void refreshCards() {
-		for(Character c : myDeck) {
-			c.changeHasMovedFalse();
+		for(Card o : myDeck) {
+			if(o.getClass().equals("Character")) {
+				Character c = (Character) o;
+				c.changeHasMovedFalse();
+			}
 		}
 	}
 	
@@ -48,11 +51,11 @@ public class Deck {
 	 * @param value index of Deck array
 	 * @return character from the Deck
 	 */
-	public Character get(int value) {
+	public Card get(int value) {
 		return myDeck.get(value);
 	}
 	
-	public void remove(Character c) {
+	public void remove(Card c) {
 		myDeck.remove(c);
 	}
 	
@@ -60,7 +63,7 @@ public class Deck {
 		myDeck.remove(value);
 	}	
 	
-	public void add(Character c) {
+	public void add(Card c) {
 		myDeck.add(c);
 	}
 	
@@ -68,14 +71,38 @@ public class Deck {
 		return myDeck.size();
 	}
 	
-	public List<Character> getCharacters(){
+	public List<Card> getCards(){
 		return myDeck;
+	}
+	
+	public List<Spell> getSpells(){
+		List<Spell> temp = new ArrayList<Spell>();
+		
+		for(Card o : myDeck) {
+			if(o.getClass().equals("Spell")) {
+				Spell s = (Spell)o;
+				temp.add(s);
+			}
+		}
+		return temp;
+	}
+	
+	public List<Character> getCharacters(){
+		List<Character> temp = new ArrayList<Character>();
+		
+		for(Card o : myDeck) {
+			if(o.getClass().equals("Character")) {
+				Character c = (Character)o;
+				temp.add(c);
+			}
+		}
+		return temp;
 	}
 	
 	public String toString() {
 		String value = "";
-		for(Character i : myDeck) {
-			value += i.toString() + "\n";
+		for(Card o : myDeck) {
+			value += o.toString() + "\n";
 		}
 		return value;
 	}
