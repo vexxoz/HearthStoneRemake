@@ -9,8 +9,6 @@ import java.nio.file.Path;
 import javax.imageio.ImageIO;
 import javax.swing.JComponent;
 
-import org.omg.CORBA.Object;
-
 //import javafx.animation.Animation;
 
 
@@ -300,9 +298,6 @@ public class Board extends JComponent {
 			if(c.getRect().contains(x, y)) {
 				System.out.println("Selected Card from board");
 				if(c.getHasMoved()) {
-					return null;
-				}
-				if(!c.getPos().equals("Hand")) {
 					return null;
 				}
 				return c;

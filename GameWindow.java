@@ -63,7 +63,7 @@ public class GameWindow {
 							break;
 						}
 					}
-					if(myBoard.getGameArea().contains(x,y) && !isEnemy) {
+					if(myBoard.getGameArea().contains(x,y) && !isEnemy && selectedAlly.getPos().equals("Hand")) {
 						myBoard.playCard(selectedAlly);
 					}
 				}
