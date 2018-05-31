@@ -5,32 +5,42 @@ public class Character implements Card{
 	private String type;
 	private int hp;
 	private int atk;
+	private int cost;
 	private String bigPhotoSource;
 	private String littlePhotoSource;
-	private int cost;
 	private Rectangle rect;
 	private boolean hasMoved;
 
+	/**
+	 * Constructor for a Character card
+	 */
 	public Character() {
 		name = "Test";
-		type = "Ally";
+		type = "Character";
 		hp = 0;
 		atk = 0;
 		cost = 0;
-		type = "Character";
 		bigPhotoSource = "";
 		littlePhotoSource = "";
 		rect = new Rectangle(0, 0, 0, 0);
 		hasMoved = true;
 	}
 
+	/**
+	 * Constructor for a Character card with params
+	 * @param nameIn name of the Character
+	 * @param hpIn health of the character
+	 * @param atkIn attack of the character
+	 * @param costIn cost of the character
+	 * @param bigPhotoIn big image for the character (100x100)
+	 * @param littlePhotoIn smaller photo for the character (50x50)
+	 */
 	public Character(String nameIn, int hpIn, int atkIn, int costIn, String bigPhotoIn, String littlePhotoIn) {
 		name = nameIn;
-		type = "Ally";
+		type = "Character";
 		hp = hpIn;
 		atk = atkIn;
 		cost = costIn;
-		type = "Character";
 		bigPhotoSource = bigPhotoIn;
 		littlePhotoSource = littlePhotoIn;
 		rect = new Rectangle(0, 0, 100, 100);
@@ -47,6 +57,10 @@ public class Character implements Card{
 		
 	}
 
+	public void setName(String nameIn) {
+		name = nameIn;
+	}	
+	
 	public void reduceCost(int costIn) {
 		cost -= costIn;
 	}
@@ -62,10 +76,6 @@ public class Character implements Card{
 
 	public Rectangle getRect() {
 		return rect;
-	}
-	
-	public void setName(String nameIn) {
-		name = nameIn;
 	}
 
 	public void setHp(int hpIn) {

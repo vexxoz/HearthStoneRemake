@@ -7,11 +7,20 @@ public class AI {
 	private List<Character> playerPlayedCards;
 	private int mana;
 	
-	
+	/**
+	 * Constructor for AI
+	 */
 	public AI() {
 		mana = 0;
 	}
 	
+	/**
+	 * Helper Method for an AI turn
+	 * @param cardsInHandIn Deck of cards in enemy hand
+	 * @param cardsPlayedIn Deck of cards the enemy has played
+	 * @param playedPlayerCardsIn Deck of cards the player has played
+	 * @param manaIn How much mana in a turn 
+	 */
 	public void enemyTurn(Deck cardsInHandIn, Deck cardsPlayedIn, Deck playedPlayerCardsIn, int manaIn) {
 		cardsInHand = cardsInHandIn.getCharacters();
 		cardsPlayed = cardsPlayedIn.getCharacters();
@@ -22,6 +31,9 @@ public class AI {
 		attack();
 	}
 	
+	/**
+	 * Method to play cards
+	 */
 	public void move() {
 		
 		if(cardsPlayed.size() < 8) {
@@ -99,6 +111,9 @@ public class AI {
 		
 	}
 	
+	/**
+	 * Method to attack with available cards played
+	 */
 	public void attack() {
 		//for each enemy
 		for(int i = 0; i < cardsPlayed.size(); i++) {

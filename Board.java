@@ -45,6 +45,9 @@ public class Board extends JComponent {
 	// game area rectangle object
 	private Rectangle gameArea = new Rectangle(0, 120, 950, 390);
 	
+	/**
+	 * Constructor for the game board
+	 */
 	public Board() {
 		super();
 		//load images
@@ -87,6 +90,9 @@ public class Board extends JComponent {
 		usedMana = 0;
 	}
 	
+	/**
+	 * Paints the graphics to the game board
+	 */
 	public void paintComponent(Graphics g) {
 		Graphics2D canvas = (Graphics2D) g;
 		
@@ -234,17 +240,26 @@ public class Board extends JComponent {
 		
 		
 	}
-	
-	public void playCard(Card a) {
-		if(a.getCost() <= mana-usedMana && playedPlayerCards.size() < 8) {
+	/**
+	 * Puts the card played from hand to board
+	 * @param cardPlayed card to play
+	 */
+	public void playCard(Card cardPlayed) {
+		if(cardPlayed.getCost() <= mana-usedMana && playedPlayerCards.size() < 8) {
 			System.out.println("Played Card from hand");
-			playedPlayerCards.add(a);
-			playerHand.remove(a);
-			usedMana += a.getCost();
+			playedPlayerCards.add(cardPlayed);
+			playerHand.remove(cardPlayed);
+			usedMana += cardPlayed.getCost();
 			repaint();			
 		}
 	}
 	
+	/**
+	 * Method to check if a player card was selected for dragging
+	 * @param x coord of the mouse
+	 * @param ycoord of the mouse
+	 * @return the card that was selected
+	 */
 	public Card selectedPlayerCard(int x, int y) {
 		for(Card c : playerHand.getCards()) {
 			if(c.getRect().contains(x, y)) {
@@ -265,7 +280,12 @@ public class Board extends JComponent {
 		//repaint();
 		
 	}
-	
+	/**
+	 * Runs the code for the next turn
+	 * @param x coords of the mouse
+	 * @param y coord of the mouse
+	 * @return boolean if the button was pressed for optimization
+	 */
 	public boolean nextTurn(int x, int y) {
 		if(nextTurnButton.contains(x, y)) {
 			if(mana < 10) {		
@@ -295,6 +315,11 @@ public class Board extends JComponent {
 		}
 	}
 	
+	/**
+	 * Method to handle the player attacking
+	 * @param attackingCardIn Card thats attacking
+	 * @param enemyCardIn Card thats being attacked
+	 */
 	public void playerAttack(Card attackingCardIn, Card enemyCardIn) {
 		if(attackingCardIn.getClass().equals("Character") && enemyCardIn.getClass().equals("Character")) {
 			Character attackingCard = (Character) attackingCardIn;
@@ -313,10 +338,18 @@ public class Board extends JComponent {
 		}
 	}
 	
+	/**
+	 * Method to get enemy played cards
+	 * @return enemy played cards
+	 */
 	public Deck getEnemyCards(){
 		return playedEnemyCards;
 	}
 	
+	/**
+	 * Method to return the game area
+	 * @return game area rectangle
+	 */
 	public Rectangle getGameArea() {
 		return gameArea;
 	}

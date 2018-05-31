@@ -29,8 +29,14 @@ public class Deck {
 		for(int i=0; i<cardsTotal;i++) {
 			
 			int index = (int)(Math.random()*(cards.getCards().size()-1));
-			Character addCard = cards.get(index);
-			myDeck.add(new Character(addCard.getName(), addCard.getHp(), addCard.getAtk(), addCard.getCost(), addCard.getSourceBig(), addCard.getSourceLittle()));
+			Card addCard = cards.get(index);
+			if(addCard.getClass().equals("Character")) {
+				Character c = (Character) addCard;
+				myDeck.add(new Character(c.getName(), c.getHp(), c.getAtk(), c.getCost(), c.getSourceBig(), c.getSourceLittle()));
+			}if(addCard.getClass().equals("Spell")) {
+				Spell c = (Spell)addCard;
+				myDeck.add(new Spell(c.getName(), c.getType(), c.getDamage(), c.getHeal(), c.getSourceBig(), c.getSourceLittle()));
+			}
 		}
 	}
 	
@@ -55,26 +61,50 @@ public class Deck {
 		return myDeck.get(value);
 	}
 	
+	/**
+	 * Remove a card from the deck
+	 * @param c Card to remove
+	 */
 	public void remove(Card c) {
 		myDeck.remove(c);
 	}
 	
+	/**
+	 * Remove a card from the deck
+	 * @param value index of Card
+	 */
 	public void remove(int value) {
 		myDeck.remove(value);
 	}	
 	
+	/**
+	 * Add a card to the deck
+	 * @param c Card to add to deck
+	 */
 	public void add(Card c) {
 		myDeck.add(c);
 	}
 	
+	/**
+	 * Get the size of the Deck
+	 * @return the size of the deck
+	 */
 	public int size() {
 		return myDeck.size();
 	}
 	
+	/**
+	 * Gets all cards in a deck
+	 * @return Cards in the deck
+	 */
 	public List<Card> getCards(){
 		return myDeck;
 	}
 	
+	/**
+	 * Gets all the spells from the deck
+	 * @return spells from the deck
+	 */
 	public List<Spell> getSpells(){
 		List<Spell> temp = new ArrayList<Spell>();
 		
@@ -87,6 +117,10 @@ public class Deck {
 		return temp;
 	}
 	
+	/**
+	 * Gets all the Characters from the deck
+	 * @return all the characters from the deck
+	 */
 	public List<Character> getCharacters(){
 		List<Character> temp = new ArrayList<Character>();
 		
@@ -99,6 +133,9 @@ public class Deck {
 		return temp;
 	}
 	
+	/**
+	 * To string method
+	 */
 	public String toString() {
 		String value = "";
 		for(Card o : myDeck) {
