@@ -2,9 +2,9 @@ import java.util.List;
 
 public class AI {
 
-	private List<Character> cardsInHand;
-	private List<Character> cardsPlayed;
-	private List<Character> playerPlayedCards;
+	private Deck cardsInHand;
+	private Deck cardsPlayed;
+	private Deck playerPlayedCards;
 	private int mana;
 	
 	/**
@@ -22,9 +22,9 @@ public class AI {
 	 * @param manaIn How much mana in a turn 
 	 */
 	public void enemyTurn(Deck cardsInHandIn, Deck cardsPlayedIn, Deck playedPlayerCardsIn, int manaIn) {
-		cardsInHand = cardsInHandIn.getCharacters();
-		cardsPlayed = cardsPlayedIn.getCharacters();
-		playerPlayedCards = playedPlayerCardsIn.getCharacters();
+		cardsInHand = cardsInHandIn;
+		cardsPlayed = cardsPlayedIn;
+		playerPlayedCards = playedPlayerCardsIn;
 		mana = manaIn;
 		
 		move();
@@ -41,69 +41,81 @@ public class AI {
 			int value = 0;
 			
 			while(mana > 0 && cardsInHand.size() > 1) {
-				Character bestPlay = (Character) cardsInHand.get(0);
+				Card tempBestPlay = cardsInHand.get(0);
 				int tempValue = 0;
 				for(int i = 1; i<cardsInHand.size();i++) {
-					Character compare = (Character) cardsInHand.get(i);
-					if(compare.getCost() <= mana) {
-						if(compare.getAtk() > bestPlay.getAtk()) {
-							if(compare.getAtk()-bestPlay.getAtk() <= 2) {
-								tempValue += 2;
+					Card tempCompare = cardsInHand.get(i);
+					if(tempCompare.getCost() <= mana) {
+						if(tempCompare.getType().equals("Character") && tempBestPlay.getType().equals("Character")) {
+							Character compare = (Character)tempCompare;
+							Character bestPlay = (Character)tempBestPlay;
+							if(compare.getAtk() > bestPlay.getAtk()) {
+								if(compare.getAtk()-bestPlay.getAtk() <= 2) {
+									tempValue += 2;
+								}
+								else if(compare.getAtk()-bestPlay.getAtk() <= 5) {
+									tempValue += 3;
+								}
+								else if(compare.getAtk()-bestPlay.getAtk() <= 10) {
+									tempValue += 5;
+								}else {
+									tempValue += 20;
+								}
 							}
-							else if(compare.getAtk()-bestPlay.getAtk() <= 5) {
-								tempValue += 3;
+							if(compare.getHp() > bestPlay.getHp()) {
+								if(compare.getHp()-bestPlay.getHp() <= 2) {
+									tempValue += 3;
+								}
+								else if(compare.getHp()-bestPlay.getHp() <= 5) {
+									tempValue += 5;
+								}
+								else if(compare.getHp()-bestPlay.getHp() <= 10) {
+									tempValue += 10;
+								}else {
+									tempValue += 30;
+								}
 							}
-							else if(compare.getAtk()-bestPlay.getAtk() <= 10) {
-								tempValue += 5;
-							}else {
-								tempValue += 20;
+							
+							if(compare.getCost() < bestPlay.getCost()) {
+								if(bestPlay.getCost()-compare.getCost() <= 2) {
+									tempValue += 10;
+								}
+								else if(bestPlay.getCost()-compare.getCost() <= 3) {
+									tempValue += 15;
+								}
+								else if(bestPlay.getCost()-compare.getCost() <= 5) {
+									tempValue += 20;
+								}else {
+									tempValue += 35;
+								}
 							}
-						}
-						if(compare.getHp() > bestPlay.getHp()) {
-							if(compare.getHp()-bestPlay.getHp() <= 2) {
-								tempValue += 3;
+							
+							if(tempValue > value) {
+								value = tempValue;
+								bestPlay = compare;
 							}
-							else if(compare.getHp()-bestPlay.getHp() <= 5) {
-								tempValue += 5;
-							}
-							else if(compare.getHp()-bestPlay.getHp() <= 10) {
-								tempValue += 10;
-							}else {
-								tempValue += 30;
-							}
-						}
-						
-						if(compare.getCost() < bestPlay.getCost()) {
-							if(bestPlay.getCost()-compare.getCost() <= 2) {
-								tempValue += 10;
-							}
-							else if(bestPlay.getCost()-compare.getCost() <= 3) {
-								tempValue += 15;
-							}
-							else if(bestPlay.getCost()-compare.getCost() <= 5) {
-								tempValue += 20;
-							}else {
-								tempValue += 35;
-							}
-						}
-						
-						if(tempValue > value) {
-							value = tempValue;
-							bestPlay = compare;
 						}
 					}
 				}
 				
 				//System.out.println(bestPlay.toString());
-				
-				cardsPlayed.add(bestPlay);
-				cardsInHand.remove(bestPlay);
-				mana -= bestPlay.getCost();
+				if(tempBestPlay.getType().equals("Character")) {
+					System.out.println("Enemy played Character");
+					Character bestPlay = (Character) tempBestPlay;
+					cardsPlayed.add(bestPlay);
+				}else {
+					System.out.println("Enemy played Spell");
+				}
+				cardsInHand.remove(tempBestPlay);
+				mana -= tempBestPlay.getCost();
 				
 			}
 			if(cardsInHand.size() == 1 && playerPlayedCards.size() > 1) {
-				Character bestPlay = cardsInHand.get(0);
-				cardsPlayed.add(bestPlay);
+				Card bestPlay = cardsInHand.get(0);
+				if(bestPlay.getType().equals("Character")) {
+					Character c = (Character) bestPlay;
+					cardsPlayed.add(c);					
+				}
 				cardsInHand.remove(bestPlay);		
 				mana -= bestPlay.getCost();
 			}
@@ -117,7 +129,7 @@ public class AI {
 	public void attack() {
 		//for each enemy
 		for(int i = 0; i < cardsPlayed.size(); i++) {
-			Character enemy = cardsPlayed.get(i);
+			Character enemy = cardsPlayed.getCharacters().get(i);
 			if(!enemy.getHasMoved()) {
 				// checks to see if there are any minions to attack
 				if(playerPlayedCards.size() > 1) {
@@ -126,7 +138,7 @@ public class AI {
 					
 					// go through all player characters
 					for(int j = 0; j < playerPlayedCards.size(); j++) {	
-						Character player = playerPlayedCards.get(j);
+						Character player = playerPlayedCards.getCharacters().get(j);
 						int value = 0;
 						
 						if(enemy.getAtk() >= player.getHp()) {
@@ -143,22 +155,22 @@ public class AI {
 						
 					}
 						
-					if(enemy.takeDamage(playerPlayedCards.get(index).getAtk())) {
+					if(enemy.takeDamage(playerPlayedCards.getCharacters().get(index).getAtk())) {
 						System.out.println("Enemy died");
 						cardsPlayed.remove(enemy);
 					}
-					if(playerPlayedCards.get(index).takeDamage(enemy.getAtk())) {
+					if(playerPlayedCards.getCharacters().get(index).takeDamage(enemy.getAtk())) {
 						System.out.println("player died");
 						playerPlayedCards.remove(index);
 					}				
 					
 				}else if(playerPlayedCards.size() == 1){
 					
-					if(enemy.takeDamage(playerPlayedCards.get(0).getAtk())) {
+					if(enemy.takeDamage(playerPlayedCards.getCharacters().get(0).getAtk())) {
 						System.out.println("Enemy died");
 						cardsPlayed.remove(enemy);
 					}
-					if(playerPlayedCards.get(0).takeDamage(enemy.getAtk())) {
+					if(playerPlayedCards.getCharacters().get(0).takeDamage(enemy.getAtk())) {
 						System.out.println("player died");
 						playerPlayedCards.remove(0);
 					}

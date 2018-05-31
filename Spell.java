@@ -4,33 +4,39 @@ public class Spell implements Card{
 	
 	private String name;
 	private String type;
+	private String spellType;
 	private int damage;
 	private int heal;
 	private int cost;
 	private String bigPhotoSource;
 	private String littlePhotoSource;	
 	private Rectangle rect;
+	private String pos;
 	
 	public Spell() {
 		name = "";
-		type = "none";
+		type = "Spell";
 		damage = 0;
 		heal = 0;
 		cost = 0;
 		rect = new Rectangle(0, 0, 0, 0);
 		bigPhotoSource = "";
 		littlePhotoSource = "";
-		
+		pos = "Hand";
+		spellType = "";
 	}
 	
-	public Spell(String nameIn, String typeIn, int damageIn, int healIn, String bigPhotoIn, String littlePhotoIn) {
+	public Spell(String nameIn, String spellTypeIn, int costIn, int damageIn, int healIn, String bigPhotoIn, String littlePhotoIn) {
 		name = nameIn;
-		type = typeIn;
+		type = "Spell";
+		spellType = spellTypeIn;
+		cost = costIn;
 		damage = damageIn;
 		heal = healIn;
 		rect = new Rectangle(0, 0, 100, 100);
 		bigPhotoSource = bigPhotoIn;
 		littlePhotoSource = littlePhotoIn;
+		pos = "Hand";
 	}
 	
 	public void setRect(int x, int y) {
@@ -82,6 +88,28 @@ public class Spell implements Card{
 	public String toString() {
 		return "Name: " + name + " Type: " + type + " Damage: " + damage + " Heal: " + heal + " Cost: " + cost;
 
+	}
+
+	public void setType(String typeIn) {
+		type = typeIn;
+		
 	}	
+	
+	public String getPos() {
+		return pos;
+	}
+
+	public void setPos(String posIn) {
+		pos = posIn;
+		
+	}	
+	
+	public String getSpellType() {
+		return spellType;
+	}
+	
+	public void setSpellType(String spellTypeIn) {
+		spellType = spellTypeIn;
+	}
 	
 }

@@ -28,15 +28,18 @@ public class Deck {
 
 		for(int i=0; i<cardsTotal;i++) {
 			
-			int index = (int)(Math.random()*(cards.getCards().size()-1));
+			int index = (int)(Math.random()*(cards.getCards().size()));
+			
 			Card addCard = cards.get(index);
-			if(addCard.getClass().equals("Character")) {
+			
+			if(addCard.getType().equals("Character")) {
 				Character c = (Character) addCard;
 				myDeck.add(new Character(c.getName(), c.getHp(), c.getAtk(), c.getCost(), c.getSourceBig(), c.getSourceLittle()));
-			}if(addCard.getClass().equals("Spell")) {
+			}if(addCard.getType().equals("Spell")) {
 				Spell c = (Spell)addCard;
-				myDeck.add(new Spell(c.getName(), c.getType(), c.getDamage(), c.getHeal(), c.getSourceBig(), c.getSourceLittle()));
+				myDeck.add(new Spell(c.getName(), c.getSpellType(), c.getCost(), c.getDamage(), c.getHeal(), c.getSourceBig(), c.getSourceLittle()));
 			}
+			
 		}
 	}
 	
@@ -45,7 +48,7 @@ public class Deck {
 	 */
 	public void refreshCards() {
 		for(Card o : myDeck) {
-			if(o.getClass().equals("Character")) {
+			if(o.getType().equals("Character")) {
 				Character c = (Character) o;
 				c.changeHasMovedFalse();
 			}
@@ -109,7 +112,7 @@ public class Deck {
 		List<Spell> temp = new ArrayList<Spell>();
 		
 		for(Card o : myDeck) {
-			if(o.getClass().equals("Spell")) {
+			if(o.getType().equals("Spell")) {
 				Spell s = (Spell)o;
 				temp.add(s);
 			}
@@ -125,7 +128,7 @@ public class Deck {
 		List<Character> temp = new ArrayList<Character>();
 		
 		for(Card o : myDeck) {
-			if(o.getClass().equals("Character")) {
+			if(o.getType().equals("Character")) {
 				Character c = (Character)o;
 				temp.add(c);
 			}

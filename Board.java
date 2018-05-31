@@ -72,17 +72,21 @@ public class Board extends JComponent {
 		
 		playedPlayerCards = new Deck();
 		
+		System.out.println("playerDeck: " + playerDeck.toString());
+		System.out.println("playerHand: " + playerHand.toString());
 		
 		// enemy deck instantiations
 		enemyAI = new AI();
 		enemyDeck = new Deck();
-		enemyDeck.startingDeck(20);
+		enemyDeck.startingDeck(5);
 		
 		enemyHand = new Deck();
 		enemyHand.startingDeck(5);
 		
 		playedEnemyCards = new Deck();
 		
+		System.out.println("enemyDeck: " + enemyDeck.toString());
+		System.out.println("enemyHand: " + enemyHand.toString());
 		
 		// set the starting mana for the player
 		// max mana is 10
@@ -100,6 +104,7 @@ public class Board extends JComponent {
 		canvas.drawImage(gameAreaTexture, 0,120,null);
 		canvas.setColor(new Color(255,255,255,1));
 		canvas.fill(gameArea);
+		
 		
 		// prints a maximum of 8 cards in the enemy's hand
 		int padding = 0;
@@ -163,7 +168,7 @@ public class Board extends JComponent {
 //				System.out.println(e.getMessage());
 			}
 			
-			if(a.getClass().equals("Character")) {
+			if(a.getType().equals("Character")) {
 				Character c = (Character)a;
 				canvas.setColor(Color.white);
 				canvas.drawString("HP: " + c.getHp(), 60+padding, 535);
@@ -171,7 +176,7 @@ public class Board extends JComponent {
 				canvas.setColor(Color.black);
 				canvas.drawString("Cost: " + c.getCost(), 60+padding, 575);
 				padding += 500/playerHand.size()+50;
-			}if(a.getClass().equals("Spell")) {
+			}else if(a.getType().equals("Spell")) {
 				Spell c = (Spell)a;
 				canvas.setColor(Color.white);
 				if(c.getType().equals("heal")) {
@@ -245,13 +250,37 @@ public class Board extends JComponent {
 	 * @param cardPlayed card to play
 	 */
 	public void playCard(Card cardPlayed) {
-		if(cardPlayed.getCost() <= mana-usedMana && playedPlayerCards.size() < 8) {
-			System.out.println("Played Card from hand");
+		if(cardPlayed.getCost() <= mana-usedMana && cardPlayed.getType().equals("Character") && playedPlayerCards.size() < 8) {
+			System.out.println("Played Character from hand");
+			cardPlayed.setPos("Board");
 			playedPlayerCards.add(cardPlayed);
 			playerHand.remove(cardPlayed);
 			usedMana += cardPlayed.getCost();
-			repaint();			
+						
 		}
+		if(cardPlayed.getCost() <= mana-usedMana && cardPlayed.getType().equals("Spell")) {
+			Spell spellPlayed = (Spell)cardPlayed;
+			System.out.println("Played Spell from hand");
+			if(spellPlayed.getSpellType().equals("Damage")) {
+				for(Character c : playedEnemyCards.getCharacters()) {
+					if(c.takeDamage(spellPlayed.getDamage())) {
+						System.out.println("Enemy died");
+						playedEnemyCards.remove(c);
+					}
+				}
+			}
+			if(spellPlayed.getSpellType().equals("Heal")) {
+				for(Character c : playedPlayerCards.getCharacters()) {
+					c.heal(spellPlayed.getHeal());
+					System.out.println("Ally healed");
+				}
+			}			
+			
+			playerHand.remove(cardPlayed);
+			usedMana += cardPlayed.getCost();			
+		}
+		
+		repaint();
 	}
 	
 	/**
@@ -271,6 +300,9 @@ public class Board extends JComponent {
 			if(c.getRect().contains(x, y)) {
 				System.out.println("Selected Card from board");
 				if(c.getHasMoved()) {
+					return null;
+				}
+				if(!c.getPos().equals("Hand")) {
 					return null;
 				}
 				return c;
@@ -321,7 +353,7 @@ public class Board extends JComponent {
 	 * @param enemyCardIn Card thats being attacked
 	 */
 	public void playerAttack(Card attackingCardIn, Card enemyCardIn) {
-		if(attackingCardIn.getClass().equals("Character") && enemyCardIn.getClass().equals("Character")) {
+		if(attackingCardIn.getType().equals("Character") && enemyCardIn.getType().equals("Character")) {
 			Character attackingCard = (Character) attackingCardIn;
 			Character enemyCard = (Character) enemyCardIn;
 			attackingCard.changeHasMovedTrue();
