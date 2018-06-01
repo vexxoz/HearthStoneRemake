@@ -105,6 +105,12 @@ public class AI {
 					cardsPlayed.add(bestPlay);
 				}else {
 					System.out.println("Enemy played Spell");
+					Spell spell = (Spell)tempBestPlay;
+					if(spell.getSpellType().equals("Damage")) {
+						for(Character c : playerPlayedCards.getCharacters()) {
+
+						}
+					}
 				}
 				cardsInHand.remove(tempBestPlay);
 				mana -= tempBestPlay.getCost();
