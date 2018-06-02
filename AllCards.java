@@ -13,7 +13,7 @@ public class AllCards {
 //		allCards.add(new Character("Bob",2,1,2,"", ""));
 		allCards.add(new Character("Bob",1,3,3,"pirateImageBig.png", "pirateImageSmall.png"));
 		allCards.add(new Spell("Blast","Damage", 5, 5, 0, "", ""));
-		allCards.add(new Spell("Blast","Heal", 2, 0, 1, "", ""));
+		allCards.add(new Spell("Heal","Heal", 2, 0, 1, "", ""));
 	}
 	
 	/**

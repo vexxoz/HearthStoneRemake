@@ -112,8 +112,8 @@ public class Board extends JComponent {
 			}catch (Exception e) {
 				System.out.println(e.getMessage());
 			}
-//			canvas.setColor(Color.white);
-//			canvas.drawString("HP: " + a.getHp(), 60+padding, 75);
+			canvas.setColor(Color.white);
+			canvas.drawString("Name: " + o.getName(), 30+padding, 75);
 //			canvas.drawString("ATK: " + a.getAtk(), 58+padding, 95);
 //			canvas.setColor(Color.black);
 //			canvas.drawString("Cost: " + a.getCost(), 60+padding, 115);

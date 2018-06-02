@@ -94,6 +94,15 @@ public class AI {
 								value = tempValue;
 								bestPlay = compare;
 							}
+						}if(tempBestPlay.getType().equals("Spell") && tempCompare.getType().equals("Character")) {
+							Spell spell = (Spell) tempBestPlay;
+							if(spell.getSpellType().equals("Heal") && cardsPlayed.getCharacters().size() > 0) {
+								tempBestPlay = (Card)spell;
+							}else if(spell.getSpellType().equals("Damage") && playerPlayedCards.getCharacters().size() > 0) {
+								tempBestPlay = (Card)spell;
+							}else {
+								tempBestPlay = tempCompare;
+							}
 						}
 					}
 				}
@@ -102,25 +111,56 @@ public class AI {
 				if(tempBestPlay.getType().equals("Character")) {
 					System.out.println("Enemy played Character");
 					Character bestPlay = (Character) tempBestPlay;
-					cardsPlayed.add(bestPlay);
+					cardsPlayed.add(bestPlay);			
 				}else {
-					System.out.println("Enemy played Spell");
 					Spell spell = (Spell)tempBestPlay;
 					if(spell.getSpellType().equals("Damage")) {
+						System.out.println("Enemy Played Damage Spell");
 						for(Character c : playerPlayedCards.getCharacters()) {
-
-						}
+							if(c.takeDamage(spell.getDamage())) {
+								System.out.println("Ally died by Spell");
+								playerPlayedCards.remove(c);
+							}							
+						}					
 					}
+					if(spell.getSpellType().equals("Heal")) {
+						System.out.println("Enemy Played Heal Spell");
+						for(Character c : cardsPlayed.getCharacters()) {
+							c.heal(spell.getHeal());
+							System.out.println("Enemy healed");
+						}
+					}	
 				}
+
 				cardsInHand.remove(tempBestPlay);
-				mana -= tempBestPlay.getCost();
-				
+				mana -= tempBestPlay.getCost();		
 			}
 			if(cardsInHand.size() == 1 && playerPlayedCards.size() > 1) {
 				Card bestPlay = cardsInHand.get(0);
 				if(bestPlay.getType().equals("Character")) {
 					Character c = (Character) bestPlay;
 					cardsPlayed.add(c);					
+				}else {
+					System.out.println("Enemy played Spell");
+					Spell spell = (Spell)bestPlay;
+					if(spell.getSpellType().equals("Damage") && playerPlayedCards.getCharacters().size() > 0) {
+						for(Character c : playerPlayedCards.getCharacters()) {
+							if(c.takeDamage(spell.getDamage())) {
+								System.out.println("Ally died by Spell");
+								playerPlayedCards.remove(c);
+							}							
+						}
+						cardsInHand.remove(bestPlay);
+						mana -= bestPlay.getCost();						
+					}
+					if(spell.getSpellType().equals("Heal") && cardsPlayed.getCharacters().size() > 0) {
+						for(Character c : cardsPlayed.getCharacters()) {
+							c.heal(spell.getHeal());
+							System.out.println("Enemy healed");
+						}
+						cardsInHand.remove(bestPlay);
+						mana -= bestPlay.getCost();						
+					}	
 				}
 				cardsInHand.remove(bestPlay);		
 				mana -= bestPlay.getCost();
