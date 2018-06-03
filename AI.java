@@ -34,7 +34,7 @@ public class AI {
 	/**
 	 * Method to play cards
 	 */
-	public void move() {
+	private void move() {
 		
 		if(cardsPlayed.size() < 8) {
 			
@@ -172,7 +172,7 @@ public class AI {
 	/**
 	 * Method to attack with available cards played
 	 */
-	public void attack() {
+	private void attack() {
 		//for each enemy
 		for(int i = 0; i < cardsPlayed.size(); i++) {
 			Character enemy = cardsPlayed.getCharacters().get(i);

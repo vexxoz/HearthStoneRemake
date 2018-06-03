@@ -33,6 +33,10 @@ public class Board extends JComponent {
 	private Deck enemyHand;
 	
 	
+	// Heros
+	Hero playerHero = new Hero(50,"player");
+	Hero enemyHero = new Hero(50,"enemy");
+	
 	//All variables
 	private static int mana;
 	private static int usedMana;
@@ -103,6 +107,21 @@ public class Board extends JComponent {
 		canvas.setColor(new Color(255,255,255,1));
 		canvas.fill(gameArea);
 		
+		//print heros
+		try {
+			canvas.drawImage(ImageIO.read(new File(enemyHero.getImage())), 450, 140, null);
+			canvas.drawImage(ImageIO.read(new File(playerHero.getImage())), 450, 435, null);
+		}catch (Exception e) {
+			System.out.println(e.getMessage());
+		}
+		
+		canvas.setColor(Color.white);
+		canvas.drawString("HP: " + enemyHero.getHp(), 450, 135);
+		canvas.drawString("HP: " + playerHero.getHp(), 450, 500);
+		
+		canvas.setColor(new Color(255,255,255,1));
+		canvas.fill(enemyHero.getRect());		
+		canvas.fill(playerHero.getRect());		
 		
 		// prints a maximum of 8 cards in the enemy's hand
 		int padding = 0;
@@ -127,7 +146,7 @@ public class Board extends JComponent {
 		for(Character a : playedEnemyCards.getCharacters()) {
 			a.setRect(50+padding, 270, 50,  50);
 			try {
-				canvas.drawImage(ImageIO.read(new File(a.getSourceLittle())), 50+padding, 270, null);
+				canvas.drawImage(ImageIO.read(new File(a.getSourceLittle())), 50+padding, 255, null);
 				canvas.setColor(new Color(255,255,255,1));
 				canvas.fill(a.getRect());
 			}catch (Exception e) {
@@ -136,8 +155,8 @@ public class Board extends JComponent {
 //				System.out.println(e.getMessage());
 			}
 			canvas.setColor(Color.white);
-			canvas.drawString("HP: " + a.getHp(), 60+padding, 290);
-			canvas.drawString("ATK: " + a.getAtk(), 58+padding, 300);
+			canvas.drawString("HP: " + a.getHp(), 60+padding, 275);
+			canvas.drawString("ATK: " + a.getAtk(), 58+padding, 295);
 			padding += 500/playedEnemyCards.size()+50;
 		}		
 
@@ -194,9 +213,9 @@ public class Board extends JComponent {
 		// prints all the cards the player has played
 		padding = 0;
 		for(Character a : playedPlayerCards.getCharacters()) {
-			a.setRect(50+padding, 370, 50,50);
+			a.setRect(50+padding, 325, 50,50);
 			try {
-				canvas.drawImage(ImageIO.read(new File(a.getSourceLittle())), 50+padding, 370, null);
+				canvas.drawImage(ImageIO.read(new File(a.getSourceLittle())), 50+padding, 325, null);
 				canvas.setColor(new Color(255,255,255,1));
 				canvas.fill(a.getRect());
 			}catch (Exception e) {
@@ -205,8 +224,8 @@ public class Board extends JComponent {
 				System.out.println(e.getMessage());
 			}
 			canvas.setColor(Color.white);
-			canvas.drawString("HP: " + a.getHp(), 60+padding, 390);
-			canvas.drawString("ATK: " + a.getAtk(), 58+padding, 400);
+			canvas.drawString("HP: " + a.getHp(), 60+padding, 345);
+			canvas.drawString("ATK: " + a.getAtk(), 58+padding, 365);
 			padding += 500/playedPlayerCards.size()+50;
 		}
 		
@@ -365,6 +384,18 @@ public class Board extends JComponent {
 		}
 	}
 	
+	public boolean attackHero(Card selectedAlly) {
+		Character attackingCard = (Character)selectedAlly;
+		System.out.println("attacked enemy Hero");
+		if(enemyHero.takeDamage(attackingCard.getAtk())) {
+			System.out.println("GAME WON");
+			return true;
+		}
+		repaint();
+		return false;
+		
+	}
+	
 	/**
 	 * Method to get enemy played cards
 	 * @return enemy played cards
@@ -381,5 +412,11 @@ public class Board extends JComponent {
 		return gameArea;
 	}
 
+	public Hero getEnemyHero() {
+		return enemyHero;
+	}
 	
+	public Hero getPlayerHero() {
+		return playerHero;
+	}
 }

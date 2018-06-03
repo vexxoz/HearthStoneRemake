@@ -106,12 +106,19 @@ public class GameWindow {
 				if(selectedAlly != null) {
 					boolean isEnemy = false;
 					for(Character c : myBoard.getEnemyCards().getCharacters()) {
-						if(c.getRect().contains(x,y)) {
+						if(c.getRect().contains(x,y) && selectedAlly.getPos().equals("Board")) {
 							System.out.println("released on enemy");
 							myBoard.playerAttack(selectedAlly, c);
 							isEnemy = true;
 							break;
 						}
+					}
+					if(myBoard.getEnemyHero().getRect().contains(x, y) && selectedAlly.getPos().equals("Board")) {
+						if(myBoard.attackHero(selectedAlly)) {
+							gameFrame.dispose();
+						}
+						System.out.println("released on enemy Hero");
+						isEnemy = true;
 					}
 					if(myBoard.getGameArea().contains(x,y) && !isEnemy && selectedAlly.getPos().equals("Hand")) {
 						myBoard.playCard(selectedAlly);
