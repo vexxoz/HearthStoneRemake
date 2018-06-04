@@ -36,10 +36,10 @@ public class Board extends JComponent {
 	
 	
 	// Heros
-	Hero playerHero = new Hero(50,"player");
-	Hero enemyHero = new Hero(10,"enemy");
+	Hero playerHero = new Hero(35,"player");
+	Hero enemyHero = new Hero(35,"enemy");
 	
-	private String gameOver = null;
+	private String gameOver = "";
 	
 	//All variables
 	private static int mana;
@@ -47,6 +47,9 @@ public class Board extends JComponent {
 	
 	// turn button object
 	private Rectangle nextTurnButton = new Rectangle(950,510,50,40);
+	
+	// main menu button
+	private Rectangle mainMenuButton = new Rectangle(440, 315, 75, 35);
 	
 	// game area rectangle object
 	private Rectangle gameArea = new Rectangle(0, 120, 950, 390);
@@ -71,20 +74,20 @@ public class Board extends JComponent {
 		// max hand is 8
 		// 
 		playerDeck = new Deck();
-		playerDeck.startingDeck(5);
+		playerDeck.startingDeck(25);
 		
 		playerHand = new Deck();
 		playerHand.startingDeck(5);
 		
 		playedPlayerCards = new Deck();
 		
-		System.out.println("playerDeck: " + playerDeck.toString());
-		System.out.println("playerHand: " + playerHand.toString());
+//		System.out.println("playerDeck: " + playerDeck.toString());
+//		System.out.println("playerHand: " + playerHand.toString());
 		
 		// enemy deck instantiations
 		enemyAI = new AI();
 		enemyDeck = new Deck();
-		enemyDeck.startingDeck(5);
+		enemyDeck.startingDeck(25);
 		
 		enemyHand = new Deck();
 		enemyHand.startingDeck(5);
@@ -92,8 +95,8 @@ public class Board extends JComponent {
 		playedEnemyCards = new Deck();
 		
 		
-		System.out.println("enemyDeck: " + enemyDeck.toString());
-		System.out.println("enemyHand: " + enemyHand.toString());
+//		System.out.println("enemyDeck: " + enemyDeck.toString());
+//		System.out.println("enemyHand: " + enemyHand.toString());
 		
 		// set the starting mana for the player
 		// max mana is 10
@@ -137,15 +140,17 @@ public class Board extends JComponent {
 			}catch (Exception e) {
 				System.out.println(e.getMessage());
 			}
-			canvas.setColor(Color.white);
-			canvas.drawString("Name: " + o.getName(), 30+padding, 75);
+//			canvas.setColor(Color.white);
+//			canvas.drawString("Name: " + o.getName(), 30+padding, 75);
 //			canvas.drawString("ATK: " + a.getAtk(), 58+padding, 95);
 //			canvas.setColor(Color.black);
 //			canvas.drawString("Cost: " + a.getCost(), 60+padding, 115);
 			padding += 500/enemyHand.size()+50;
-			
-			
 		}		
+		
+		canvas.setColor(Color.black);
+		String enemyDeckCount = enemyDeck.size() + "";
+		canvas.drawString("Cards: " + enemyDeckCount, 940, 50);
 		
 		// prints all the cards the player has played
 		padding = 0;
@@ -161,8 +166,8 @@ public class Board extends JComponent {
 //				System.out.println(e.getMessage());
 			}
 			canvas.setColor(Color.white);
-			canvas.drawString("HP: " + a.getHp(), 60+padding, 275);
-			canvas.drawString("ATK: " + a.getAtk(), 58+padding, 295);
+			canvas.drawString("H:" + a.getHp(), 49+padding, 250);
+			canvas.drawString("A:" + a.getAtk(), 78+padding, 250);
 			padding += 500/playedEnemyCards.size()+50;
 		}		
 
@@ -190,25 +195,21 @@ public class Board extends JComponent {
 				canvas.fill(a.getRect());
 //				System.out.println(e.getMessage());
 			}
-			
+			canvas.setColor(Color.white);
 			if(a.getType().equals("Character")) {
 				Character c = (Character)a;
-				canvas.setColor(Color.white);
-				canvas.drawString("HP: " + c.getHp(), 60+padding, 535);
-				canvas.drawString("ATK: " + c.getAtk(), 58+padding, 555);
-				canvas.setColor(Color.black);
-				canvas.drawString("Cost: " + c.getCost(), 60+padding, 575);
+				canvas.drawString("H:" + c.getHp(), 20+padding, 610);
+				canvas.drawString("A:" + c.getAtk(), 90+padding, 610);
+				canvas.drawString("C:" + c.getCost(), 20+padding, 530);
 				padding += 500/playerHand.size()+50;
 			}else if(a.getType().equals("Spell")) {
 				Spell c = (Spell)a;
-				canvas.setColor(Color.white);
-				if(c.getType().equals("heal")) {
-					canvas.drawString("Heal: " + c.getHeal(), 60+padding, 535);	
-				}if(c.getType().equals("damage")) {
-					canvas.drawString("Damage: " + c.getDamage(), 60+padding, 535);	
+				if(c.getSpellType().equals("Heal")) {
+					canvas.drawString("H:" + c.getHeal(), 20+padding, 610);
+				}if(c.getSpellType().equals("Damage")) {
+					canvas.drawString("D:" + c.getDamage(), 20+padding, 610);
 				}
-				canvas.setColor(Color.black);
-				canvas.drawString("Cost: " + c.getCost(), 60+padding, 575);
+				canvas.drawString("C:" + c.getCost(), 20+padding, 530);
 				padding += 500/playerHand.size()+50;
 			}else {
 				System.out.println("ERROR: UNKNOWN CARD IN DECK");
@@ -230,8 +231,8 @@ public class Board extends JComponent {
 				System.out.println(e.getMessage());
 			}
 			canvas.setColor(Color.white);
-			canvas.drawString("HP: " + a.getHp(), 60+padding, 345);
-			canvas.drawString("ATK: " + a.getAtk(), 58+padding, 365);
+			canvas.drawString("H:" + a.getHp(), 49+padding, 390);
+			canvas.drawString("A:" + a.getAtk(), 78+padding, 390);
 			padding += 500/playedPlayerCards.size()+50;
 		}
 		
@@ -266,14 +267,18 @@ public class Board extends JComponent {
 		String deckCount = playerDeck.size() + "";
 		canvas.drawString("Cards: " + deckCount, 940, 570);
 		
-		if(gameOver != null) {
+		if(!gameOver.equals("")) {
 //			canvas.drawString("Cards: " + deckCount, 940, 570);
 			canvas.setColor(Color.WHITE);
 			canvas.fillRect(375, 265, 200, 100);
 			canvas.setColor(Color.black);
 			Font endGameFont = new Font("serif", Font.PLAIN, 35);
 			canvas.setFont(endGameFont);
-			canvas.drawString(gameOver, 390, 325);
+			canvas.drawString(gameOver, 390, 305);
+			canvas.fill(mainMenuButton);
+			canvas.setFont(DEFAULT_FONT);
+			canvas.setColor(Color.white);
+			canvas.drawString("Main Menu", 443, 338);
 		}
 	}
 	/**
@@ -323,13 +328,13 @@ public class Board extends JComponent {
 	public Card selectedPlayerCard(int x, int y) {
 		for(Card c : playerHand.getCards()) {
 			if(c.getRect().contains(x, y)) {
-				System.out.println("Selected Card from hand");
+				//System.out.println("Selected Card from hand");
 				return c;
 			}
 		}
 		for(Character c : playedPlayerCards.getCharacters()) {
 			if(c.getRect().contains(x, y)) {
-				System.out.println("Selected Card from board");
+				//System.out.println("Selected Card from board");
 				if(c.getHasMoved()) {
 					return null;
 				}
@@ -403,7 +408,7 @@ public class Board extends JComponent {
 			}
 			if(attackingCard.takeDamage(enemyCard.getAtk())) {
 				System.out.println("player died");
-				System.out.println(attackingCard);
+				//System.out.println(attackingCard);
 				playedPlayerCards.remove(attackingCard);
 			}
 			repaint();
@@ -447,7 +452,7 @@ public class Board extends JComponent {
 	}
 
 	public void setGameOverText(String string) {
-		System.out.println("Changed Text");
+//		System.out.println("Changed Text");
 		gameOver = string;
 		repaint();
 	}
@@ -457,4 +462,16 @@ public class Board extends JComponent {
 		card.changeHasMovedTrue();
 		
 	}
+	
+	public String getGameOverText() {
+		return gameOver;
+	}
+
+	public boolean selectMainMenu(int x, int y) {
+		if(mainMenuButton.contains(x, y)) {
+			return true;
+		}
+		return false;
+	}
+	
 }

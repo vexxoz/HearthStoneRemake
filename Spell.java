@@ -8,8 +8,7 @@ public class Spell implements Card{
 	private int damage;
 	private int heal;
 	private int cost;
-	private String bigPhotoSource;
-	private String littlePhotoSource;	
+	private String photo;
 	private Rectangle rect;
 	private String pos;
 	
@@ -20,13 +19,12 @@ public class Spell implements Card{
 		heal = 0;
 		cost = 0;
 		rect = new Rectangle(0, 0, 0, 0);
-		bigPhotoSource = "";
-		littlePhotoSource = "";
+		photo = "";
 		pos = "Hand";
 		spellType = "";
 	}
 	
-	public Spell(String nameIn, String spellTypeIn, int costIn, int damageIn, int healIn, String bigPhotoIn, String littlePhotoIn) {
+	public Spell(String nameIn, String spellTypeIn, int costIn, int damageIn, int healIn, String photoIn) {
 		name = nameIn;
 		type = "Spell";
 		spellType = spellTypeIn;
@@ -34,8 +32,7 @@ public class Spell implements Card{
 		damage = damageIn;
 		heal = healIn;
 		rect = new Rectangle(0, 0, 100, 100);
-		bigPhotoSource = bigPhotoIn;
-		littlePhotoSource = littlePhotoIn;
+		photo = photoIn;
 		pos = "Hand";
 	}
 	
@@ -78,13 +75,8 @@ public class Spell implements Card{
 	}
 	
 	public String getSourceBig() {
-		return bigPhotoSource;
+		return photo;
 	}
-
-	public String getSourceLittle() {
-		return littlePhotoSource;
-	}
-	
 	public String toString() {
 		return "Name: " + name + " Type: " + type + " Damage: " + damage + " Heal: " + heal + " Cost: " + cost;
 

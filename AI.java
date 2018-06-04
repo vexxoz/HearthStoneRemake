@@ -41,9 +41,9 @@ public class AI {
 	 */
 	private void move() {
 
-		System.out.println("ENEMY AI MOVE THOUGHTS START ");
-		System.out.println();
-		System.out.println();
+//		System.out.println("ENEMY AI MOVE THOUGHTS START ");
+//		System.out.println();
+//		System.out.println();
 		
 		Card bestCard = null;
 		int bestValue = 0;
@@ -52,7 +52,7 @@ public class AI {
 		for(Card card : cardsInHand.getCards()) {
 			int value = 0;
 			if(card.getType().equals("Character")){
-				System.out.println("Checking enemy Character");
+//				System.out.println("Checking enemy Character");
 				Character character = (Character)card;
 				if(cardsInHand.getCards().size() == 1 && character.getCost() <= mana) {
 					bestCard = character;
@@ -145,10 +145,10 @@ public class AI {
 			}
 		}
 		
-		System.out.println("ENEMY AI MOVE THOUGHTS END ");
+//		System.out.println("ENEMY AI MOVE THOUGHTS END ");
 		
 		if(cardsInHand.getIndexOf(mana) != null && spellPlayable) {
-			System.out.println("Playing another card");
+//			System.out.println("Playing another card");
 			move();
 		}
 		

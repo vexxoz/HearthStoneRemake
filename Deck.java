@@ -37,7 +37,7 @@ public class Deck {
 				myDeck.add(new Character(c.getName(), c.getHp(), c.getAtk(), c.getCost(), c.getSourceBig(), c.getSourceLittle()));
 			}if(addCard.getType().equals("Spell")) {
 				Spell c = (Spell)addCard;
-				myDeck.add(new Spell(c.getName(), c.getSpellType(), c.getCost(), c.getDamage(), c.getHeal(), c.getSourceBig(), c.getSourceLittle()));
+				myDeck.add(new Spell(c.getName(), c.getSpellType(), c.getCost(), c.getDamage(), c.getHeal(), c.getSourceBig()));
 			}
 			
 		}

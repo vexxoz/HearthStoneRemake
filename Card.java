@@ -10,7 +10,6 @@ public interface Card {
 	public String getName();
 	public int getCost();
 	public String getSourceBig();
-	public String getSourceLittle();
 	public String getPos();
 	public void setPos(String posIn);
 }
