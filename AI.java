@@ -207,6 +207,7 @@ public class AI {
 					}
 					
 				}else {
+					System.out.println("Enemy attacked your hero");
 					if(playerHero.takeDamage(enemy.getAtk())) {
 						return true;
 					}
