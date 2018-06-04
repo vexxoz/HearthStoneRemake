@@ -1,10 +1,10 @@
 import java.awt.Color;
+import java.awt.Font;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.Rectangle;
 import java.awt.image.BufferedImage;
 import java.io.File;
-import java.nio.file.Path;
 
 import javax.imageio.ImageIO;
 import javax.swing.JComponent;
@@ -14,12 +14,14 @@ import javax.swing.JComponent;
 
 public class Board extends JComponent {
 	
+	private static final Font DEFAULT_FONT = new Font("TimesRoman", Font.PLAIN, 15);
+	
 	//Game board photos
-	BufferedImage postIcon;
-	BufferedImage postIconUsed;
-	BufferedImage gameAreaTexture;
-	BufferedImage postBackground;
-	BufferedImage cardBacks;
+	private BufferedImage postIcon;
+	private BufferedImage postIconUsed;
+	private BufferedImage gameAreaTexture;
+	private BufferedImage postBackground;
+	private BufferedImage cardBacks;
 	
 	//player Decks
 	private Deck playerDeck;
@@ -35,7 +37,9 @@ public class Board extends JComponent {
 	
 	// Heros
 	Hero playerHero = new Hero(50,"player");
-	Hero enemyHero = new Hero(50,"enemy");
+	Hero enemyHero = new Hero(10,"enemy");
+	
+	private String gameOver = null;
 	
 	//All variables
 	private static int mana;
@@ -103,6 +107,7 @@ public class Board extends JComponent {
 	public void paintComponent(Graphics g) {
 		Graphics2D canvas = (Graphics2D) g;
 		
+		canvas.setFont(DEFAULT_FONT);
 		// sets the game board
 		canvas.drawImage(gameAreaTexture, 0,120,null);
 		canvas.setColor(new Color(255,255,255,1));
@@ -261,7 +266,15 @@ public class Board extends JComponent {
 		String deckCount = playerDeck.size() + "";
 		canvas.drawString("Cards: " + deckCount, 940, 570);
 		
-		
+		if(gameOver != null) {
+//			canvas.drawString("Cards: " + deckCount, 940, 570);
+			canvas.setColor(Color.WHITE);
+			canvas.fillRect(375, 265, 200, 100);
+			canvas.setColor(Color.black);
+			Font endGameFont = new Font("serif", Font.PLAIN, 35);
+			canvas.setFont(endGameFont);
+			canvas.drawString(gameOver, 390, 325);
+		}
 	}
 	/**
 	 * Puts the card played from hand to board
@@ -344,15 +357,27 @@ public class Board extends JComponent {
 			if(playerHand.size() < 8 && playerDeck.size() > 0) {
 				playerHand.add(playerDeck.get(0));
 				playerDeck.remove(playerDeck.get(0));
-			}	
+			}else if(playerDeck.size() == 0) {
+				if(playerHero.takeDamage(3)) {
+					gameOver = "YOU LOST";
+				}
+				System.out.println("Fatigue Damage taken to your Hero");
+			}
 			if(enemyHand.size() < 8 && enemyDeck.size() > 0) {
 				enemyHand.add(enemyDeck.get(0));
 				enemyDeck.remove(enemyDeck.get(0));
 				//System.out.println("Adding card to enemy Deck: " + enemyDeck.getCharacters().get(0).toString());
+			}else if(enemyDeck.size() == 0) {
+				if(enemyHero.takeDamage(3)) {
+					gameOver = "YOU WON";
+				}
+				System.out.println("Fatigue Damage taken to enemy Hero");
 			}
 			
 			
-			enemyAI.enemyTurn(enemyHand, playedEnemyCards, playedPlayerCards, playerHero, mana);
+			if(enemyAI.enemyTurn(enemyHand, playedEnemyCards, playedPlayerCards, playerHero, mana)) {
+				gameOver = "YOU LOST";
+			}
 			playedPlayerCards.refreshCards();
 			playedEnemyCards.refreshCards();
 			repaint();
@@ -419,5 +444,17 @@ public class Board extends JComponent {
 	
 	public Hero getPlayerHero() {
 		return playerHero;
+	}
+
+	public void setGameOverText(String string) {
+		System.out.println("Changed Text");
+		gameOver = string;
+		repaint();
+	}
+
+	public void moved(Card selectedAlly) {
+		Character card = (Character) selectedAlly;
+		card.changeHasMovedTrue();
+		
 	}
 }

@@ -115,8 +115,9 @@ public class GameWindow {
 					}
 					if(myBoard.getEnemyHero().getRect().contains(x, y) && selectedAlly.getPos().equals("Board")) {
 						if(myBoard.attackHero(selectedAlly)) {
-							gameFrame.dispose();
+							myBoard.setGameOverText("YOU WON");
 						}
+						myBoard.moved(selectedAlly);
 						System.out.println("released on enemy Hero");
 						isEnemy = true;
 					}

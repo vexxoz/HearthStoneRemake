@@ -22,7 +22,7 @@ public class AI {
 	 * @param playedPlayerCardsIn Deck of cards the player has played
 	 * @param manaIn How much mana in a turn 
 	 */
-	public void enemyTurn(Deck cardsInHandIn, Deck cardsPlayedIn, Deck playedPlayerCardsIn, Hero playerHeroIn, int manaIn) {
+	public boolean enemyTurn(Deck cardsInHandIn, Deck cardsPlayedIn, Deck playedPlayerCardsIn, Hero playerHeroIn, int manaIn) {
 		cardsInHand = cardsInHandIn;
 		cardsPlayed = cardsPlayedIn;
 		playerPlayedCards = playedPlayerCardsIn;
@@ -30,7 +30,10 @@ public class AI {
 		playerHero = playerHeroIn;
 		
 		move();
-		attack();
+		if(attack()) {
+			return true;
+		}
+		return false;
 	}
 	
 	/**
@@ -154,7 +157,7 @@ public class AI {
 	/**
 	 * Method to attack with available cards played
 	 */
-	private void attack() {
+	private boolean attack() {
 		//for each enemy
 		for(int i = 0; i < cardsPlayed.size(); i++) {
 			Character enemy = cardsPlayed.getCharacters().get(i);
@@ -203,15 +206,15 @@ public class AI {
 						playerPlayedCards.remove(0);
 					}
 					
-				}else{
+				}else {
 					if(playerHero.takeDamage(enemy.getAtk())) {
-						System.out.println("GAME Lost");
+						return true;
 					}
 				}
 	
 			}
 		}
-
+		return false;
 	}
 	
 	
