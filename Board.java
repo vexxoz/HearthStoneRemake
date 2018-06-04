@@ -87,6 +87,7 @@ public class Board extends JComponent {
 		
 		playedEnemyCards = new Deck();
 		
+		
 		System.out.println("enemyDeck: " + enemyDeck.toString());
 		System.out.println("enemyHand: " + enemyHand.toString());
 		
@@ -347,11 +348,11 @@ public class Board extends JComponent {
 			if(enemyHand.size() < 8 && enemyDeck.size() > 0) {
 				enemyHand.add(enemyDeck.get(0));
 				enemyDeck.remove(enemyDeck.get(0));
-//				System.out.println(enemyDeck.getCharacters().get(0).toString());
+				//System.out.println("Adding card to enemy Deck: " + enemyDeck.getCharacters().get(0).toString());
 			}
 			
 			
-			enemyAI.enemyTurn(enemyHand, playedEnemyCards, playedPlayerCards, mana);
+			enemyAI.enemyTurn(enemyHand, playedEnemyCards, playedPlayerCards, playerHero, mana);
 			playedPlayerCards.refreshCards();
 			playedEnemyCards.refreshCards();
 			repaint();

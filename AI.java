@@ -6,6 +6,7 @@ public class AI {
 	private Deck cardsPlayed;
 	private Deck playerPlayedCards;
 	private int mana;
+	private Hero playerHero;
 	
 	/**
 	 * Constructor for AI
@@ -21,11 +22,12 @@ public class AI {
 	 * @param playedPlayerCardsIn Deck of cards the player has played
 	 * @param manaIn How much mana in a turn 
 	 */
-	public void enemyTurn(Deck cardsInHandIn, Deck cardsPlayedIn, Deck playedPlayerCardsIn, int manaIn) {
+	public void enemyTurn(Deck cardsInHandIn, Deck cardsPlayedIn, Deck playedPlayerCardsIn, Hero playerHeroIn, int manaIn) {
 		cardsInHand = cardsInHandIn;
 		cardsPlayed = cardsPlayedIn;
 		playerPlayedCards = playedPlayerCardsIn;
 		mana = manaIn;
+		playerHero = playerHeroIn;
 		
 		move();
 		attack();
@@ -35,136 +37,116 @@ public class AI {
 	 * Method to play cards
 	 */
 	private void move() {
-		
-		if(cardsPlayed.size() < 8) {
-			
-			int value = 0;
-			
-			while(mana > 0 && cardsInHand.size() > 1) {
-				Card tempBestPlay = cardsInHand.get(0);
-				int tempValue = 0;
-				for(int i = 1; i<cardsInHand.size();i++) {
-					Card tempCompare = cardsInHand.get(i);
-					if(tempCompare.getCost() <= mana) {
-						if(tempCompare.getType().equals("Character") && tempBestPlay.getType().equals("Character")) {
-							Character compare = (Character)tempCompare;
-							Character bestPlay = (Character)tempBestPlay;
-							if(compare.getAtk() > bestPlay.getAtk()) {
-								if(compare.getAtk()-bestPlay.getAtk() <= 2) {
-									tempValue += 2;
-								}
-								else if(compare.getAtk()-bestPlay.getAtk() <= 5) {
-									tempValue += 3;
-								}
-								else if(compare.getAtk()-bestPlay.getAtk() <= 10) {
-									tempValue += 5;
-								}else {
-									tempValue += 20;
-								}
-							}
-							if(compare.getHp() > bestPlay.getHp()) {
-								if(compare.getHp()-bestPlay.getHp() <= 2) {
-									tempValue += 3;
-								}
-								else if(compare.getHp()-bestPlay.getHp() <= 5) {
-									tempValue += 5;
-								}
-								else if(compare.getHp()-bestPlay.getHp() <= 10) {
-									tempValue += 10;
-								}else {
-									tempValue += 30;
-								}
-							}
-							
-							if(compare.getCost() < bestPlay.getCost()) {
-								if(bestPlay.getCost()-compare.getCost() <= 2) {
-									tempValue += 10;
-								}
-								else if(bestPlay.getCost()-compare.getCost() <= 3) {
-									tempValue += 15;
-								}
-								else if(bestPlay.getCost()-compare.getCost() <= 5) {
-									tempValue += 20;
-								}else {
-									tempValue += 35;
-								}
-							}
-							
-							if(tempValue > value) {
-								value = tempValue;
-								bestPlay = compare;
-							}
-						}if(tempBestPlay.getType().equals("Spell") && tempCompare.getType().equals("Character")) {
-							Spell spell = (Spell) tempBestPlay;
-							if(spell.getSpellType().equals("Heal") && cardsPlayed.getCharacters().size() > 0) {
-								tempBestPlay = (Card)spell;
-							}else if(spell.getSpellType().equals("Damage") && playerPlayedCards.getCharacters().size() > 0) {
-								tempBestPlay = (Card)spell;
-							}else {
-								tempBestPlay = tempCompare;
-							}
-						}
-					}
-				}
-				
-				//System.out.println(bestPlay.toString());
-				if(tempBestPlay.getType().equals("Character")) {
-					System.out.println("Enemy played Character");
-					Character bestPlay = (Character) tempBestPlay;
-					cardsPlayed.add(bestPlay);			
-				}else {
-					Spell spell = (Spell)tempBestPlay;
-					if(spell.getSpellType().equals("Damage")) {
-						System.out.println("Enemy Played Damage Spell");
-						for(Character c : playerPlayedCards.getCharacters()) {
-							if(c.takeDamage(spell.getDamage())) {
-								System.out.println("Ally died by Spell");
-								playerPlayedCards.remove(c);
-							}							
-						}					
-					}
-					if(spell.getSpellType().equals("Heal")) {
-						System.out.println("Enemy Played Heal Spell");
-						for(Character c : cardsPlayed.getCharacters()) {
-							c.heal(spell.getHeal());
-							System.out.println("Enemy healed");
-						}
-					}	
-				}
 
-				cardsInHand.remove(tempBestPlay);
-				mana -= tempBestPlay.getCost();		
-			}
-			if(cardsInHand.size() == 1 && playerPlayedCards.size() > 1) {
-				Card bestPlay = cardsInHand.get(0);
-				if(bestPlay.getType().equals("Character")) {
-					Character c = (Character) bestPlay;
-					cardsPlayed.add(c);					
-				}else {
-					System.out.println("Enemy played Spell");
-					Spell spell = (Spell)bestPlay;
-					if(spell.getSpellType().equals("Damage") && playerPlayedCards.getCharacters().size() > 0) {
-						for(Character c : playerPlayedCards.getCharacters()) {
-							if(c.takeDamage(spell.getDamage())) {
-								System.out.println("Ally died by Spell");
-								playerPlayedCards.remove(c);
-							}							
-						}
-						cardsInHand.remove(bestPlay);
-						mana -= bestPlay.getCost();						
+		System.out.println("ENEMY AI MOVE THOUGHTS START ");
+		System.out.println();
+		System.out.println();
+		
+		Card bestCard = null;
+		int bestValue = 0;
+		boolean spellPlayable = true;
+		
+		for(Card card : cardsInHand.getCards()) {
+			int value = 0;
+			if(card.getType().equals("Character")){
+				System.out.println("Checking enemy Character");
+				Character character = (Character)card;
+				if(cardsInHand.getCards().size() == 1 && character.getCost() <= mana) {
+					bestCard = character;
+				}else{
+					if(character.getCost() <= mana) {
+						if(character.getAtk() >= 0) {
+							 value += 1;
+						 }
+						 if(character.getAtk() > 5) {
+							 value += 10;
+						 }
+						 if(character.getHp() > 0) {
+							 value += 1;
+						 }
+						 if(character.getHp() > 4) {
+							 value += 5;
+						 }
+						 if(character.getHp() > 6) {
+							 value += 10;
+						 }
+						 if(character.getCost() < 10) {
+							 value += 1;
+						 }
+						 if(character.getCost() < 4) {
+							 value += 2;
+						 }
+						 if(character.getCost() < 2) {
+							 value += 3;
+						 }
 					}
-					if(spell.getSpellType().equals("Heal") && cardsPlayed.getCharacters().size() > 0) {
-						for(Character c : cardsPlayed.getCharacters()) {
-							c.heal(spell.getHeal());
-							System.out.println("Enemy healed");
-						}
-						cardsInHand.remove(bestPlay);
-						mana -= bestPlay.getCost();						
-					}	
 				}
-				cardsInHand.remove(bestPlay);		
-				mana -= bestPlay.getCost();
+				if(value > bestValue) {
+					bestCard = character;
+				}
+			}else if(card.getType().equals("Spell")) {
+				Spell spell = (Spell)card;
+				if(spell.getSpellType().equals("Damage")) {
+					// if the player has more than one character played and the enemy has less than or equal to 2 cards
+					if(playerPlayedCards.getCharacters().size() > 1 && cardsInHand.getCards().size() <=2 && spell.getCost() <= mana) {
+						System.out.println("Enemy played a damage spell");
+						bestCard = spell;
+						
+					// if this spell is your only card and the player has more than one card played
+					}else if (playerPlayedCards.getCharacters().size() > 0 && cardsInHand.getCards().size() == 1 && spell.getCost() <= mana) {
+						System.out.println("Enemy played a damage spell");
+						bestCard = spell;
+					// if the player has more than or equal to 4 cards played then play a damage spell
+					}else if (playerPlayedCards.getCharacters().size() > 4 && spell.getCost() <= mana) {
+						System.out.println("Enemy played a damage spell");
+						bestCard = spell;						
+					}else {
+						spellPlayable = false;
+					}
+				}else if(spell.getSpellType().equals("Heal")) {
+					// if the enemy has 1 or more cards then play the heal spell
+					if(cardsPlayed.getCharacters().size() >= 1 && spell.getCost() <= mana) {
+						System.out.println("Enemy played a heal spell");
+						bestCard = spell;
+					}else {
+						spellPlayable = false;
+					}
+				}
+			}else {
+				System.out.println("Unknown Card type");
 			}
+		}
+		
+		if(bestCard != null) {
+			cardsInHand.remove(bestCard);
+			mana -= bestCard.getCost();
+			if(bestCard.getType().equals("Character")) {
+				System.out.println("Enemy played a character");
+				cardsPlayed.add(bestCard);
+			}
+			if(bestCard.getType().equals("Spell")) {
+				Spell spell = (Spell)bestCard;
+				if(spell.getSpellType().equals("Damage")) {
+					for(Character c : playerPlayedCards.getCharacters()) {
+						if(c.takeDamage(spell.getDamage())) {
+							System.out.println("Ally died from enemy damage spell");
+							playerPlayedCards.remove(c);
+						}
+					}					
+				}else if(spell.getSpellType().equals("Heal")) {
+					for(Character c : cardsPlayed.getCharacters()) {
+						c.heal(spell.getHeal());
+						System.out.println("Enemy minion healed healed");
+					}
+				}
+			}
+		}
+		
+		System.out.println("ENEMY AI MOVE THOUGHTS END ");
+		
+		if(cardsInHand.getIndexOf(mana) != null && spellPlayable) {
+			System.out.println("Playing another card");
+			move();
 		}
 		
 	}
@@ -222,8 +204,9 @@ public class AI {
 					}
 					
 				}else{
-					//System.out.println("No minion to attack");
-					//attack face
+					if(playerHero.takeDamage(enemy.getAtk())) {
+						System.out.println("GAME Lost");
+					}
 				}
 	
 			}

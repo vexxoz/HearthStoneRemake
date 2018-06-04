@@ -136,6 +136,15 @@ public class Deck {
 		return temp;
 	}
 	
+	public Card getIndexOf(int costIn) {
+		for(Card c : myDeck) {
+			if(c.getCost() <= costIn) {
+				return c;
+			}
+		}
+		return null;
+	}
+	
 	/**
 	 * To string method
 	 */
