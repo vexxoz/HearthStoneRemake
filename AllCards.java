@@ -10,7 +10,6 @@ public class AllCards {
 	 */
 	public AllCards() {
 		allCards.add(new Character("Bob",1,1,1,"pirateImageBig.png", "pirateImageSmall.png"));
-		allCards.add(new Character("Bob",1,3,3,"pirateImageBig.png", "pirateImageSmall.png"));
 		allCards.add(new Character("Bob",3,8,5,"pirateImageBig.png", "pirateImageSmall.png"));
 		allCards.add(new Character("Bob",4,6,5,"pirateImageBig.png", "pirateImageSmall.png"));
 		allCards.add(new Character("Bob",7,4,3,"pirateImageBig.png", "pirateImageSmall.png"));

@@ -81,9 +81,6 @@ public class Board extends JComponent {
 		
 		playedPlayerCards = new Deck();
 		
-//		System.out.println("playerDeck: " + playerDeck.toString());
-//		System.out.println("playerHand: " + playerHand.toString());
-		
 		// enemy deck instantiations
 		enemyAI = new AI();
 		enemyDeck = new Deck();
@@ -94,9 +91,6 @@ public class Board extends JComponent {
 		
 		playedEnemyCards = new Deck();
 		
-		
-//		System.out.println("enemyDeck: " + enemyDeck.toString());
-//		System.out.println("enemyHand: " + enemyHand.toString());
 		
 		// set the starting mana for the player
 		// max mana is 10
@@ -140,11 +134,6 @@ public class Board extends JComponent {
 			}catch (Exception e) {
 				System.out.println(e.getMessage());
 			}
-//			canvas.setColor(Color.white);
-//			canvas.drawString("Name: " + o.getName(), 30+padding, 75);
-//			canvas.drawString("ATK: " + a.getAtk(), 58+padding, 95);
-//			canvas.setColor(Color.black);
-//			canvas.drawString("Cost: " + a.getCost(), 60+padding, 115);
 			padding += 500/enemyHand.size()+50;
 		}		
 		
@@ -163,7 +152,6 @@ public class Board extends JComponent {
 			}catch (Exception e) {
 				canvas.setColor(Color.red);
 				canvas.fill(a.getRect());
-//				System.out.println(e.getMessage());
 			}
 			canvas.setColor(Color.white);
 			canvas.drawString("H:" + a.getHp(), 49+padding, 250);
@@ -268,7 +256,6 @@ public class Board extends JComponent {
 		canvas.drawString("Cards: " + deckCount, 940, 570);
 		
 		if(!gameOver.equals("")) {
-//			canvas.drawString("Cards: " + deckCount, 940, 570);
 			canvas.setColor(Color.WHITE);
 			canvas.fillRect(375, 265, 200, 100);
 			canvas.setColor(Color.black);
